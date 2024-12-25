@@ -5,6 +5,7 @@ import { B2, T2, T6 } from "../../../styles/Typography";
 import * as S from "./style";
 import Row from "../../../styles/Layouts/Row";
 import { SolveQuizStore } from "../SolveQuizStore";
+import { QuizAnswer } from "./QuizAnswer";
 
 export const QuizContent = () => {
   const { selectedQuiz, setSelectedQuiz } = SolveQuizStore();
@@ -30,10 +31,12 @@ export const QuizContent = () => {
         style={{
           flexWrap: "wrap",
           marginLeft: "58px",
+          marginBottom: "72px",
         }}
       >
         {[1, 2, 3, 4, 5].map((id) => (
           <Row
+            key={id}
             gap={12}
             verticalAlign="center"
             style={{ width: "calc(50% - 16px)" }}
@@ -48,6 +51,8 @@ export const QuizContent = () => {
           </Row>
         ))}
       </Row>
+      {/* 정답 확인 후 로직 필요 */}
+      <QuizAnswer />
     </S.Wrapper>
   );
 };

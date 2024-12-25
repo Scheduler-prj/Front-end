@@ -18,8 +18,8 @@ export const TotalQuizPannel = () => {
       <DurationTime />
       {/* 푼문제 번호 */}
       <S.QuizNumberWrapper>
-        {[1, 2, 3, 4, 5, 6, 6, 7, 8, 8, 8, 9, 9, 10].map((number) => (
-          <S.QuizNumber>
+        {[1, 2, 3, 4, 5, 6, 6, 7, 8, 8, 8, 9, 9, 10].map((number, index) => (
+          <S.QuizNumber key={index}>
             <T7 style={{ color: "#fff" }}>{number}</T7>
           </S.QuizNumber>
         ))}
@@ -30,7 +30,7 @@ export const TotalQuizPannel = () => {
           <B2>{"푼 퀴즈 수"}</B2>
           <T5>{"40"}</T5>
         </Row>
-        <Row>
+        <Row gap={8}>
           <B2 style={{ color: theme.colors.coolGray2 }}>{"맞은 퀴즈 수"}</B2>
           <T5 style={{ color: theme.colors.primary }}>{"31"}</T5>
         </Row>

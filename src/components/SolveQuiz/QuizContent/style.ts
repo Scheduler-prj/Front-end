@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 70%;
+  height: 100%;
   padding: 4.5% 3.17%;
   border-radius: 24px;
   background-color: #fff;
@@ -27,4 +28,19 @@ export const QuizBtn = styled.button<{ selected: boolean }>`
     background-color: ${({ selected, theme }) =>
       selected ? theme.colors.coolGray6 : theme.colors.coolGray8};
   }
+`;
+
+export const QuizAnswer = styled.div`
+  width: 100%;
+  height: fit-content;
+  background-color: ${({ theme }) => theme.colors.coolGray10};
+  border-radius: 12px;
+  padding: 2.32% 32px;
+`;
+
+export const Number = styled.div`
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.primary};
 `;

@@ -1,13 +1,12 @@
+import Row from "../../styles/Layouts/Row";
 import { QuizContent } from "./QuizContent/QuizContent";
 import { TotalQuizPannel } from "./TotalQuizPannel/TotalQuizPannel";
 
-import * as S from "./style";
-
 export const SolveQuizMain = () => {
   return (
-    <S.CommonBackground>
+    <Row style={{ padding: "2.43%" }}>
       <QuizContent />
       <TotalQuizPannel />
-    </S.CommonBackground>
+    </Row>
   );
 };

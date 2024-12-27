@@ -11,21 +11,25 @@ interface CalendarProps {
 }
 
 export const Calendar = ({year, month}: CalendarProps) => {
-// 현재 달의 날짜 데이터 생성
     const generateDays = (year: number, month: number) => {
-        const firstDayOfMonth = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const prevMonthDays = new Date(year, month, 0).getDate();
+        const firstDayOfMonth = new Date(year, month, 1).getDay(); // 해당 달의 첫 요일
+        const daysInMonth = new Date(year, month + 1, 0).getDate(); // 해당 달의 총 일수
+        const totalCells = Math.ceil((firstDayOfMonth + daysInMonth) / 7) * 7; // 필요한 셀 개수 계산
 
-        return Array.from({length: 42}, (_, i) => {
+        const prevMonthDays = new Date(year, month, 0).getDate(); // 이전 달의 총 일수
+
+        return Array.from({ length: totalCells }, (_, i) => {
             const dayNumber = i - firstDayOfMonth + 1;
 
             if (dayNumber <= 0) {
-                return {day: prevMonthDays + dayNumber, isCurrentMonth: false, tasks: []};
+                // 이전 달의 날짜
+                return { day: prevMonthDays + dayNumber, isCurrentMonth: false, tasks: [] };
             } else if (dayNumber > daysInMonth) {
-                return {day: dayNumber - daysInMonth, isCurrentMonth: false, tasks: []};
+                // 다음 달의 날짜
+                return { day: dayNumber - daysInMonth, isCurrentMonth: false, tasks: [] };
             } else {
-                return {day: dayNumber, isCurrentMonth: true, tasks: []};
+                // 현재 달의 날짜
+                return { day: dayNumber, isCurrentMonth: true, tasks: [] };
             }
         });
     };

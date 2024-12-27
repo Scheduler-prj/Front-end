@@ -9,6 +9,8 @@ export const Layout = () => {
     const location = useLocation();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const handleLogin = () => setIsLoggedIn(true); // 로그인 상태 변경
+
     // 객체 기반 페이지 매핑
     const pageMapping : {[key: string]: string} = {
         "/": "calendar", // 루트 경로는 캘린더로 매핑
@@ -25,9 +27,13 @@ export const Layout = () => {
         <AppWrapper>
             {/* 네비게이션 바와 콘텐츠 영역 */}
             <MainWrapper>
-                <NavigationBar />
+                <NavigationBar isLoggedIn={isLoggedIn}/>
                 <ContentWrapper>
-                    <HeaderLayout currentPage={currentPage} isLoggedIn={isLoggedIn}/>
+                    <HeaderLayout
+                        currentPage={currentPage}
+                        isLoggedIn={isLoggedIn}
+                        onLogin={handleLogin}
+                    />
                     <Outlet />
                 </ContentWrapper>
             </MainWrapper>

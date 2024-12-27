@@ -6,9 +6,10 @@ import ProfileImage from "../apis/kong.jpg";
 type HeaderLayoutProps = {
     currentPage : string;  // currentPage 는 문자열 타입
     isLoggedIn : boolean;
+    onLogin : () => void;
 };
 
-export const HeaderLayout = ({ currentPage, isLoggedIn }: HeaderLayoutProps) => {
+export const HeaderLayout = ({ currentPage, isLoggedIn, onLogin, }: HeaderLayoutProps) => {
     /**
      * renderHeaderContent
      * - 현재 페이지(`currentPage`) 값에 따라 헤더 좌측 영역에 렌더링할 콘텐츠를 결정합니다.
@@ -43,7 +44,7 @@ export const HeaderLayout = ({ currentPage, isLoggedIn }: HeaderLayoutProps) => 
                     </Profile>
                 ) : (
                     // 비로그인 상태: 로그인 버튼 표시
-                    <LoginButton>Log in</LoginButton>
+                    <LoginButton onClick={onLogin}>Log in</LoginButton>
                 )}
             </RightSection>
         </HeaderContainer>

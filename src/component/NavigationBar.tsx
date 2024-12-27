@@ -16,7 +16,7 @@ import { ReactComponent as LogoIcon } from "../assets/logo/LogoIcon.svg";
 import { theme } from "../styles/theme";
 import { T7, T6, B6 } from "../styles/Typography";
 
-export const NavigationBar = () => {
+export const NavigationBar = ({isLoggedIn} : {isLoggedIn:boolean}) => {
     const navigate = useNavigate();
     const location = useLocation(); // 현재 경로를 가져오기 위한 훅
 
@@ -34,32 +34,66 @@ export const NavigationBar = () => {
                 <LogoIcon style={{ width: "199px", height: "53px" }} /> {/* 로고 스타일 */}
             </Logo>
             <UserCard>
-                <div style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "50%",
-                    overflow: "hidden",
-                    border: "2px solid white", // 하얀색 테두리
-                }}>
-                    <img
-                        src={require("../apis/kong.jpg")} // 이미지 경로 수정 // 프로필 이미지 잘 들어가나 테스트 입니다 :)
-                        alt="User"
-                        width="48" /* 프로필 이미지 크기 */
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover", // 이미지가 원에 맞게 잘리도록 설정
-                        }}
-                    />
-                </div>
-                <div className="user-details" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                    <T6>
-                        김가원
-                    </T6>
-                    <B6 style={{ color: "#F5F5FA" }}>
-                        20일 연속 학습 중!
-                    </B6>
-                </div>
+                {isLoggedIn ? (
+                    <>
+                        {/* 로그인 상태 */}
+                        <div
+                            style={{
+                                width: "48px",
+                                height: "48px",
+                                borderRadius: "50%",
+                                overflow: "hidden",
+                                border: "2px solid white",
+                            }}
+                        >
+                            <img
+                                src={require("../apis/kong.jpg")}
+                                alt="User"
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                }}
+                            />
+                        </div>
+                        <div
+                            className="user-details"
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "4px",
+                            }}
+                        >
+                            <T6>김가원</T6>
+                            <B6 style={{ color: "#F5F5FA" }}>20일 연속 학습 중!</B6>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        {/* 비로그인 상태 */}
+                        <div
+                            style={{
+                                width: "48px",
+                                height: "48px",
+                                borderRadius: "50%",
+                                overflow: "hidden",
+                                backgroundColor: "#E0E0E0",
+                                border: "2px solid white",
+                            }}
+                        />
+                        <div
+                            className="user-details"
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "4px",
+                            }}
+                        >
+                            <T6>Guest</T6>
+                            <B6 style={{ color: "#F5F5FA" }}>로그인을 해주세요</B6>
+                        </div>
+                    </>
+                )}
             </UserCard>
             <MenuList>
                 {menus.map((menu, idx) => {

@@ -12,6 +12,10 @@ interface CalendarProps {
 
 export const Calendar = ({year, month}: CalendarProps) => {
     const generateDays = (year: number, month: number) => {
+        const today = new Date(); // 오늘 날짜
+        const isToday = (d: number, m: number, y: number) =>
+            d === today.getDate() && m === today.getMonth() && y === today.getFullYear();
+
         const firstDayOfMonth = new Date(year, month, 1).getDay(); // 해당 달의 첫 요일
         const daysInMonth = new Date(year, month + 1, 0).getDate(); // 해당 달의 총 일수
         const totalCells = Math.ceil((firstDayOfMonth + daysInMonth) / 7) * 7; // 필요한 셀 개수 계산
@@ -23,13 +27,18 @@ export const Calendar = ({year, month}: CalendarProps) => {
 
             if (dayNumber <= 0) {
                 // 이전 달의 날짜
-                return { day: prevMonthDays + dayNumber, isCurrentMonth: false, tasks: [] };
+                return { day: prevMonthDays + dayNumber, isCurrentMonth: false, isToday: false, tasks: [] };
             } else if (dayNumber > daysInMonth) {
                 // 다음 달의 날짜
-                return { day: dayNumber - daysInMonth, isCurrentMonth: false, tasks: [] };
+                return { day: dayNumber - daysInMonth, isCurrentMonth: false, isToday: false, tasks: [] };
             } else {
                 // 현재 달의 날짜
-                return { day: dayNumber, isCurrentMonth: true, tasks: [] };
+                return {
+                    day: dayNumber,
+                    isCurrentMonth: true,
+                    isToday: isToday(dayNumber, month, year),
+                    tasks: []
+                };
             }
         });
     };
@@ -39,8 +48,11 @@ export const Calendar = ({year, month}: CalendarProps) => {
     return (
         <CalendarGrid>
             {days.map((day, index) => (
-                <DayBox key={index} isCurrentMonth={day.isCurrentMonth}>
-                    <DayNumber>{day.day}</DayNumber>
+                <DayBox
+                    key={index}
+                    isCurrentMonth={day.isCurrentMonth}
+                >
+                    <DayNumber isToday={day.isToday}>{day.day}</DayNumber>
                     <Tasks>
                         {day.tasks.map((task, idx) => (
                             <Task key={idx}>{task}</Task>
@@ -80,10 +92,19 @@ const DayBox = styled.div<DayBoxProps>`
     //}
 `;
 
-const DayNumber = styled.div`
+const DayNumber = styled.div<{ isToday: boolean }>`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 100px;
+    background: ${({ isToday, theme }) =>
+            isToday ? theme.colors.primary : "transparent"};
+    color: ${({ isToday, theme }) =>
+            isToday ? theme.colors.white : theme.colors.black};
     font-size: 16px;
     font-weight: bold;
-    color: ${({theme}) => theme.colors.black};
 `;
 
 const Tasks = styled.div`

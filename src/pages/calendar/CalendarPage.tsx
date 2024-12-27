@@ -44,8 +44,8 @@ const CalendarWrapper = styled.div`
     display: flex;
     flex-direction: column;
     min-width: 570px;
-    max-width: calc(100% - 400px); /* 오른쪽 540px 거리 확보 */
-    width : 100%;
+    //max-width: calc(100% - 400px); /* 오른쪽 540px 거리 확보 */
+    width : 980px;
     justify-content: space-between; /* 위-아래 간격 조절 */
     padding: 24px 40px;
     margin: auto 41px 40px; /* 위, 아래, 왼쪽 간격 */

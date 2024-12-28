@@ -6,33 +6,40 @@ import {ReactComponent as GoogleIcon} from "../../assets/login/GoogleIcon.svg";
 import {ReactComponent as CloseBtn} from "../../assets/login/CloseBtn.svg";
 
 interface LoginModalProps {
-    onClose: () => void; // 모달 닫기 함수
+    onClose: () => void;  // 모달 닫기 함수
+    onLogin: () => void;  // 로그인 상태 변경 함수
 }
 
-export const LoginModal = ({onClose}: LoginModalProps) => {
+export const LoginModal = ({onClose, onLogin}: LoginModalProps) => {
+    const handleLoginClick = () => {
+        onLogin();  // 로그인 상태 업데이트
+        onClose();  // 모달 달기
+    }
     return (
         <Overlay>
-            <ModalContainer>
+            <ModalWrapper>
                 <CloseButton>
-                    <CloseBtn onClick={onClose}/>
+                    <CloseBtn onClick={onClose} />
                 </CloseButton>
-                <Title>Log in</Title>
-                <Subtitle>SNS 계정으로 간편 가입하기</Subtitle>
-                <ButtonContainer>
-                    <LoginButton>
-                        <KakaoIcon/>
-                        <span>카카오로 로그인</span>
-                    </LoginButton>
-                    <LoginButton>
-                        <NaverIcon/>
-                        <span>네이버로 로그인</span>
-                    </LoginButton>
-                    <LoginButton>
-                        <GoogleIcon/>
-                        <span>구글로 로그인</span>
-                    </LoginButton>
-                </ButtonContainer>
-            </ModalContainer>
+                <ModalContainer>
+                    <Title>Log in</Title>
+                    <Subtitle>SNS 계정으로 간편 가입하기</Subtitle>
+                    <ButtonContainer>
+                        <LoginButton onClick={handleLoginClick}>
+                            <KakaoIcon />
+                            <span>카카오로 로그인</span>
+                        </LoginButton>
+                        <LoginButton onClick={handleLoginClick}>
+                            <NaverIcon />
+                            <span>네이버로 로그인</span>
+                        </LoginButton>
+                        <LoginButton onClick={handleLoginClick}>
+                            <GoogleIcon />
+                            <span>구글로 로그인</span>
+                        </LoginButton>
+                    </ButtonContainer>
+                </ModalContainer>
+            </ModalWrapper>
         </Overlay>
     );
 };
@@ -44,19 +51,26 @@ const Overlay = styled.div`
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.25); /* 반투명 배경 */
+    background-color: rgba(0, 0, 0, 0.8); /* 반투명 배경 */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
 `;
 
+const ModalWrapper = styled.div`
+    position: relative;  /* 취소 버튼을 모달 박스 기준으로 배치 */
+    display: inline-flex;
+    align-items: flex-start;
+`;
+
 const ModalContainer = styled.div`
+    position: relative;
     display: flex;
     padding: 40px 88px 64px 88px;
     flex-direction: column;
     align-items: center;
-    gap: 44px;
+    gap: 10px;
     border-radius: 40px;
     background: #FFF;
     box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.25);
@@ -64,15 +78,15 @@ const ModalContainer = styled.div`
 
 const CloseButton = styled.button`
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: -3px;
+    right: -75px;
     background: none;
     border: none;
     cursor: pointer;
 
     svg {
-        width: 24px;
-        height: 24px;
+        width: 52px;
+        height: 52px;
     }
 
     &:hover {
@@ -81,7 +95,7 @@ const CloseButton = styled.button`
 `;
 
 const Title = styled.h2`
-    font-size: 24px;
+    font-size: 48px;
     font-weight: bold;
     color: #6373FF;
 `;

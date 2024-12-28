@@ -27,6 +27,11 @@ export const HeaderLayout = ({ currentPage, isLoggedIn, onLogin, }: HeaderLayout
         setLoginModalOpen(false);
     };
 
+    const handleLoginSuccess = () => {
+        onLogin(); // 로그인 상태 업데이트
+        setLoginModalOpen(false); // 모달 닫기
+    };
+
     const renderHeaderContent = () => {
         switch (currentPage) {
             case "calendar":
@@ -50,15 +55,15 @@ export const HeaderLayout = ({ currentPage, isLoggedIn, onLogin, }: HeaderLayout
                     <NotificationIcon />
                 </Icon>
                 {isLoggedIn ? (
-                    // 로그인 상태: 프로필 이미지 표시
                     <Profile>
                         <img src={ProfileImage} alt="Profile" />
                     </Profile>
                 ) : (
-                    // 비로그인 상태: 로그인 버튼 표시
                     <LoginButton onClick={handleLoginButtonClick}>Log in</LoginButton>
                 )}
-                {isLoginModalOpen && <LoginModal onClose={handleModalClose} />}
+                {isLoginModalOpen && (
+                    <LoginModal onClose={handleModalClose} onLogin={handleLoginSuccess} />
+                )}
             </RightSection>
         </HeaderContainer>
     );

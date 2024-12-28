@@ -7,7 +7,7 @@ import {HeaderLayout} from "./HeaderLayout";
 
 export const Layout = () => {
     const location = useLocation();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);   // 로그인 상태 관리
 
     const handleLogin = () => setIsLoggedIn(true); // 로그인 상태 변경
 

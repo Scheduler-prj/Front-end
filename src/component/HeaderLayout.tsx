@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import {ReactComponent as NotificationIcon} from "../assets/header/NotificationIcon.svg";
 import ProfileImage from "../apis/kong.jpg";
+import { LoginModal } from "./login/LoginModal";
+
 
 type HeaderLayoutProps = {
     currentPage : string;  // currentPage 는 문자열 타입
@@ -15,6 +17,16 @@ export const HeaderLayout = ({ currentPage, isLoggedIn, onLogin, }: HeaderLayout
      * - 현재 페이지(`currentPage`) 값에 따라 헤더 좌측 영역에 렌더링할 콘텐츠를 결정합니다.
      * - 특정 페이지에서 추가적인 콘텐츠가 필요 없을 경우 `null`을 반환하여 렌더링하지 않습니다.
      */
+    const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+
+    const handleLoginButtonClick = () => {
+        setLoginModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setLoginModalOpen(false);
+    };
+
     const renderHeaderContent = () => {
         switch (currentPage) {
             case "calendar":
@@ -44,8 +56,9 @@ export const HeaderLayout = ({ currentPage, isLoggedIn, onLogin, }: HeaderLayout
                     </Profile>
                 ) : (
                     // 비로그인 상태: 로그인 버튼 표시
-                    <LoginButton onClick={onLogin}>Log in</LoginButton>
+                    <LoginButton onClick={handleLoginButtonClick}>Log in</LoginButton>
                 )}
+                {isLoginModalOpen && <LoginModal onClose={handleModalClose} />}
             </RightSection>
         </HeaderContainer>
     );

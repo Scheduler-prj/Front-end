@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import {ReactComponent as KakaoIcon} from "../../assets/login/KakaoIcon.svg";
-import {ReactComponent as NaverIcon} from "../../assets/login/NaverIcon.svg";
-import {ReactComponent as GoogleIcon} from "../../assets/login/GoogleIcon.svg";
-import {ReactComponent as CloseBtn} from "../../assets/login/CloseBtn.svg";
+import {ReactComponent as KakaoIcon} from "../../assets/icons/login/KakaoIcon.svg";
+import {ReactComponent as NaverIcon} from "../../assets/icons/login/NaverIcon.svg";
+import {ReactComponent as GoogleIcon} from "../../assets/icons/login/GoogleIcon.svg";
+import {ReactComponent as CloseBtn} from "../../assets/icons/login/CloseBtn.svg";
 
 interface LoginModalProps {
     onClose: () => void;  // 모달 닫기 함수

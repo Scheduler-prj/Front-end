@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import {ReactComponent as NotificationIcon} from "../assets/header/NotificationIcon.svg";
+import {ReactComponent as NotificationIcon} from "../assets/icons/header/NotificationIcon.svg";
 import ProfileImage from "../apis/kong.jpg";
 import { LoginModal } from "./login/LoginModal";
 

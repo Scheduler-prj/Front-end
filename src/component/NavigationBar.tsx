@@ -7,11 +7,11 @@ import {
     MenuItem,
     UserCard,
 } from "../styles/layout/NavigationBar.styles";
-import { ReactComponent as CalendarIcon } from "../assets/navigation-bar/CalendarIcon.svg";
-import { ReactComponent as DashboardIcon } from "../assets/navigation-bar/DashboardIcon.svg";
-import { ReactComponent as QuizIcon } from "../assets/navigation-bar/QuizIcon.svg";
-import { ReactComponent as QuizListIcon } from "../assets/navigation-bar/QuizListIcon.svg";
-import { ReactComponent as ResultsIcon } from "../assets/navigation-bar/ResultsIcon.svg";
+import { ReactComponent as CalendarIcon } from "../assets/icons/navigation-bar/CalendarIcon.svg";
+import { ReactComponent as DashboardIcon } from "../assets/icons/navigation-bar/DashboardIcon.svg";
+import { ReactComponent as QuizIcon } from "../assets/icons/navigation-bar/QuizIcon.svg";
+import { ReactComponent as QuizListIcon } from "../assets/icons/navigation-bar/QuizListIcon.svg";
+import { ReactComponent as ResultsIcon } from "../assets/icons/navigation-bar/ResultsIcon.svg";
 import { ReactComponent as LogoIcon } from "../assets/logo/LogoIcon.svg";
 import { theme } from "../styles/theme";
 import { T7, T6, B6 } from "../styles/Typography";

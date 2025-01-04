@@ -15,17 +15,17 @@ export const WeekDays = () => {
 
 const WeekDaysWrapper = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between; /* 요일 간격 균등 배분 */
   padding: 16px 0;
   border-radius: 40px;
+    width: 100%;
   background: ${({ theme }) => theme.colors.coolGray11 || "#F6F7FF"}; /* 테마 색상 사용 */
 `;
 
 const Day = styled.div`
+    flex: 1;
   font-size: 14px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.primary || "#6673FF"};
   text-align: center;
-  flex: 1; /* 균등한 간격 */
 `;

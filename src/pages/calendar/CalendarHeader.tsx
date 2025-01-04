@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { H2 } from "../../styles/Typography";
-import { ReactComponent as MonthLeftButton } from "../../assets/calendar/MonthLeftButton.svg";
-import { ReactComponent as MonthRightButton } from "../../assets/calendar/MonthRightButton.svg"
+import { ReactComponent as MonthLeftButton } from "../../assets/icons/calendar/MonthLeftButton.svg";
+import { ReactComponent as MonthRightButton } from "../../assets/icons/calendar/MonthRightButton.svg"
 
 interface CalendarHeaderProps {
     year: number;

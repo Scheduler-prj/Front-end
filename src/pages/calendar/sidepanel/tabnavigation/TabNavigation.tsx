@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-export const TabNavigation = () => {
-    const [activeTab, setActiveTab] = useState("today");
+// Props 타입 정의
+interface TabNavigationProps {
+    activeTab: string;
+    setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const TabNavigation = ({ activeTab, setActiveTab }: TabNavigationProps) => {
 
     const tabs = [
         { id: "today", label: "오늘 하루" },
@@ -44,7 +49,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
   font-weight: bold;
   text-align: center;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   background: ${({ isActive, theme }) =>
     isActive ? theme.colors.primary || "#6673FF" : theme.colors.white || "#FFF"};

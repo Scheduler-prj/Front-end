@@ -44,7 +44,7 @@ const CalendarWrapper = styled.div`
     display: flex;
     flex-direction: row;
     min-width: 570px;
-    width : 100%;
+    width : 1560px;
     justify-content: space-between; /* 위-아래 간격 조절 */
     padding: 20px 36px;
     gap: 40px;
@@ -67,7 +67,7 @@ const CalendarSection = styled.div`
     display: flex;
     flex-direction: column; /* 세로 정렬 */
     flex: 1 0 0; /* 너비 비율 */
-    width : 100%;
+    width : 980px;
     padding: 24px 40px; /* 내부 여백 */
     gap: 40px; /* 자식 요소 간의 간격 */
     align-items: flex-start;

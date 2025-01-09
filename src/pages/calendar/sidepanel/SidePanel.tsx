@@ -21,6 +21,7 @@ export const SidePanel = () => {
         console.log(`루틴 ${id} 상태 변경`);
         // 상태 변경 로직을 구현하세요 (useState 등 사용 가능)
     };
+
     return (
         <PanelWrapper>
             {/* TabNavigation 렌더링 */}
@@ -45,5 +46,5 @@ const PanelWrapper = styled.div`
     align-items: flex-start; /* 자식 요소 왼쪽 정렬 */
     background-color:  ${({ theme }) => theme.colors.coolGray10};
     border-radius: 16px;
-    padding: 20px; /* 내부 여백 */
+    padding: 0 20px 20px 20px; /* 내부 여백 */
 `;

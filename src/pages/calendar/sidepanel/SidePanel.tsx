@@ -1,16 +1,16 @@
 import React, {useState} from "react";
 import {TabNavigation} from "./tabnavigation/TabNavigation";
 import styled from "styled-components";
-import {TodaySection} from "./sections/TodaySection"
 import {AllTasksSection} from "./sections/AllTasksSection"
 import {ScheduleSection} from "./sections/ScheduleSection"
 import {Routine} from "./sections/today/Routine";
+import {TodayTasks} from "./sections/today/TodayTasks";
 
 
 export const SidePanel = () => {
     const [activeTab, setActiveTab] = useState("today");
 
-    // 루틴 데이터를 정의합니다.
+    // 루틴 데이터를 정의
     const routines = [
         { id: 1, title: "물 마시기", completed: true },
         { id: 2, title: "영양제 챙겨먹기", completed: false },
@@ -19,7 +19,26 @@ export const SidePanel = () => {
     // 루틴의 상태를 토글하는 함수
     const toggleRoutine = (id: number) => {
         console.log(`루틴 ${id} 상태 변경`);
-        // 상태 변경 로직을 구현하세요 (useState 등 사용 가능)
+        // 상태 변경 로직 구현 예정(useState 등 사용)
+    };
+
+    // 오늘의 할 일 데이터
+    const tasks = [
+        { id: 1, title: "교양 과제1", completed: true, date: "10/1" },
+        { id: 2, title: "수학 챕터1~2 강의 듣기", completed: true, date: "10/1" },
+        { id: 3, title: "수학 문제2개 풀기", completed: false, date: "10/1" },
+    ];
+
+    // 오늘의 할 일 상태 토글 함수
+    const toggleTask = (id: number) => {
+        console.log(`할 일 ${id} 상태 변경`);
+        // 상태 변경 로직을 구현 예정(useState 등 사용 가능)
+    };
+
+    // 성과 제출 함수
+    const submitTask = (id: number) => {
+        console.log(`성과 제출: ${id}`);
+        // 성과 제출 로직을 구현 예정
     };
 
     return (
@@ -28,7 +47,10 @@ export const SidePanel = () => {
             <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
             {/* 현재 탭에 따른 콘텐츠 렌더링 */}
             {activeTab === "today" && (
-                <Routine routines={routines} onToggle={toggleRoutine} />
+                <>
+                    <Routine routines={routines} onToggle={toggleRoutine} />
+                    <TodayTasks tasks={tasks} onToggle={toggleTask} onSubmit={submitTask} />
+                </>
             )}
             {activeTab === "allTasks" && <AllTasksSection />}
             {activeTab === "schedule" && <ScheduleSection />}
@@ -46,5 +68,4 @@ const PanelWrapper = styled.div`
     align-items: flex-start; /* 자식 요소 왼쪽 정렬 */
     background-color:  ${({ theme }) => theme.colors.coolGray10};
     border-radius: 16px;
-    padding: 0 20px 20px 20px; /* 내부 여백 */
 `;

@@ -146,8 +146,6 @@ const TaskItem = styled.li<{ completed: boolean }>`
     border-radius: 8px;
     background-color: ${({ completed, theme }) =>
     completed ? theme.colors.coolGray10 : "#FFF6E5"};
-    border: ${({ completed }) =>
-    completed ? "none" : "0.4px solid #FFD580"};
     margin-bottom: 8px;
 
     &:last-child {

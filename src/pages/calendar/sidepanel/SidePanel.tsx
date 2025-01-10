@@ -10,18 +10,6 @@ import {TodayTasks} from "./sections/today/TodayTasks";
 export const SidePanel = () => {
     const [activeTab, setActiveTab] = useState("today");
 
-    // 루틴 데이터를 정의
-    const routines = [
-        { id: 1, title: "물 마시기", completed: true },
-        { id: 2, title: "영양제 챙겨먹기", completed: false },
-    ];
-
-    // 루틴의 상태를 토글하는 함수
-    const toggleRoutine = (id: number) => {
-        console.log(`루틴 ${id} 상태 변경`);
-        // 상태 변경 로직 구현 예정(useState 등 사용)
-    };
-
     // 오늘의 할 일 데이터
     const tasks = [
         { id: 1, title: "교양 과제1", completed: true, date: "10/1" },
@@ -48,7 +36,7 @@ export const SidePanel = () => {
             {/* 현재 탭에 따른 콘텐츠 렌더링 */}
             {activeTab === "today" && (
                 <>
-                    <Routine routines={routines} onToggle={toggleRoutine} />
+                    <Routine />
                     <TodayTasks tasks={tasks} onToggle={toggleTask} onSubmit={submitTask} />
                 </>
             )}

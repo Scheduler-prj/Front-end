@@ -1,16 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import {T6, B3} from "../../../../../styles/Typography"
 import {ReactComponent as Create} from "../../../../../assets/icons/calendar/rightsidebar/Create.svg";
 import {ReactComponent as Edit} from "../../../../../assets/icons/calendar/rightsidebar/Edit.svg";
+import {useRoutinesStore} from "../../../../../store/feature/routinStore";
 
 
-interface RoutineProps {
-    routines: { id: number; title: string; completed: boolean }[];
-    onToggle: (id: number) => void;
-}
+export const Routine = () => {
+    const { routines, toggleRoutine, fetchRoutines } = useRoutinesStore();
 
-export const Routine = ({routines, onToggle}: RoutineProps) => {
+    // 컴포넌트 마운트 시 루틴 데이터 가져오기
+    useEffect(() => {
+        fetchRoutines();
+    }, [fetchRoutines]);
+
     return (
         <RoutineWrapper>
             <Header>
@@ -23,12 +26,15 @@ export const Routine = ({routines, onToggle}: RoutineProps) => {
             <Divider />
             <RoutineList>
                 {routines.map((routine) => (
-                    <RoutineItem key={routine.id} completed={routine.completed}>
+                    <RoutineItem
+                        key={routine.routine_id}
+                        completed={routine.isClear}
+                    >
                         <TaskTitle>{routine.title}</TaskTitle>
                         <Checkbox
                             type="checkbox"
-                            checked={routine.completed}
-                            onChange={() => onToggle(routine.id)}
+                            checked={routine.isClear}
+                            onChange={() => toggleRoutine(routine.routine_id)}
                         />
                     </RoutineItem>
                 ))}

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {T6, B3} from "../../../../../styles/Typography"
 import {ReactComponent as Create} from "../../../../../assets/icons/calendar/rightsidebar/Create.svg";
@@ -6,7 +6,7 @@ import {ReactComponent as Edit} from "../../../../../assets/icons/calendar/right
 import {useRoutinesStore} from "../../../../../store/feature/routinStore";
 
 
-export const Routine = () => {
+export const Routine = ({ onCreate }: { onCreate: () => void }) => {
     const { routines, toggleRoutine, fetchRoutines } = useRoutinesStore();
 
     // 컴포넌트 마운트 시 루틴 데이터 가져오기
@@ -20,7 +20,7 @@ export const Routine = () => {
                 <Title>루틴</Title>
                 <Actions>
                     <Edit />
-                    <Create />
+                    <Create onClick={onCreate} />
                 </Actions>
             </Header>
             <Divider />

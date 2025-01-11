@@ -1,14 +1,25 @@
 import React, {useState} from "react";
 import {TabNavigation} from "./tabnavigation/TabNavigation";
 import styled from "styled-components";
-import {AllTasksSection} from "./sections/AllTasksSection"
-import {ScheduleSection} from "./sections/ScheduleSection"
+import {AllTasksSection} from "./sections/alltasks/AllTasksSection"
+import {ScheduleSection} from "./sections/schedule/ScheduleSection"
 import {Routine} from "./sections/today/Routine";
 import {TodayTasks} from "./sections/today/TodayTasks";
-
+import {RoutineCreation} from "./sections/today/RoutineCreation";
 
 export const SidePanel = () => {
     const [activeTab, setActiveTab] = useState("today");
+    const [isCreating, setIsCreating] = useState(false); // 루틴 생성 상태 관리
+
+    // 루틴 생성 화면으로 이동
+    const handleCreateRoutine = () => {
+        setIsCreating(true);
+    };
+
+    // 루틴 목록 화면으로 돌아가기
+    const handleBackToList = () => {
+        setIsCreating(false);
+    };
 
     // 오늘의 할 일 데이터
     const tasks = [
@@ -36,8 +47,14 @@ export const SidePanel = () => {
             {/* 현재 탭에 따른 콘텐츠 렌더링 */}
             {activeTab === "today" && (
                 <>
-                    <Routine />
-                    <TodayTasks tasks={tasks} onToggle={toggleTask} onSubmit={submitTask} />
+                    {isCreating ? (
+                        <RoutineCreation onBack={handleBackToList} />
+                    ) : (
+                        <>
+                            <Routine onCreate={handleCreateRoutine} />
+                            <TodayTasks tasks={tasks} onToggle={toggleTask} onSubmit={submitTask} />
+                        </>
+                    )}
                 </>
             )}
             {activeTab === "allTasks" && <AllTasksSection />}

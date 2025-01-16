@@ -7,9 +7,10 @@ interface TaskProps {
     tasks: { id: number; title: string; completed: boolean; date: string }[];
     onToggle: (id: number) => void;
     onSubmit: (id: number) => void;
+    onCreateTask: () => void;
 }
 
-export const TodayTasks = ({ tasks, onToggle, onSubmit }: TaskProps) => {
+export const TodayTasks = ({ tasks, onToggle, onSubmit, onCreateTask }: TaskProps) => {
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
 
@@ -19,7 +20,7 @@ export const TodayTasks = ({ tasks, onToggle, onSubmit }: TaskProps) => {
                 <Title>오늘의 할 일</Title>
                 <Actions>
                     <Edit />
-                    <Create />
+                    <Create onClick={onCreateTask}/>
                 </Actions>
             </Header>
             <Divider />

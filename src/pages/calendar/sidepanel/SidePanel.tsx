@@ -6,20 +6,24 @@ import {ScheduleSection} from "./sections/schedule/ScheduleSection"
 import {Routine} from "./sections/today/Routine";
 import {TodayTasks} from "./sections/today/TodayTasks";
 import {RoutineCreation} from "./sections/today/RoutineCreation";
+import {TaskCreation} from "./sections/today/TaskCreation";
 
 export const SidePanel = () => {
     const [activeTab, setActiveTab] = useState("today");
-    const [isCreating, setIsCreating] = useState(false); // 루틴 생성 상태 관리
+    const [isCreatingRoutine, setIsCreatingRoutine] = useState(false); // 루틴 생성 상태 관리
+    const [isCreatingTask, setIsCreatingTask] = useState(false); // 할 일 생성 상태 관리
+
 
     // 루틴 생성 화면으로 이동
     const handleCreateRoutine = () => {
-        setIsCreating(true);
+        setIsCreatingRoutine(true);
     };
 
     // 루틴 목록 화면으로 돌아가기
-    const handleBackToList = () => {
-        setIsCreating(false);
+    const handleBackToRoutineList = () => {
+        setIsCreatingRoutine(false);
     };
+
 
     // 오늘의 할 일 데이터
     const tasks = [
@@ -40,6 +44,16 @@ export const SidePanel = () => {
         // 성과 제출 로직을 구현 예정
     };
 
+    // 할 일 생성 화면으로 이동
+    const handleCreateTask = () => {
+        setIsCreatingTask(true);
+    };
+
+    // 할 일 목록 화면으로 돌아가기
+    const handleBackToTaskList = () => {
+        setIsCreatingTask(false);
+    };
+
     return (
         <PanelWrapper>
             {/* TabNavigation 렌더링 */}
@@ -47,12 +61,19 @@ export const SidePanel = () => {
             {/* 현재 탭에 따른 콘텐츠 렌더링 */}
             {activeTab === "today" && (
                 <>
-                    {isCreating ? (
-                        <RoutineCreation onBack={handleBackToList} />
+                    {isCreatingRoutine ? (
+                        <RoutineCreation onBack={handleBackToRoutineList} />
+                    ) : isCreatingTask ? (
+                        <TaskCreation onBack={handleBackToTaskList} />
                     ) : (
                         <>
                             <Routine onCreate={handleCreateRoutine} />
-                            <TodayTasks tasks={tasks} onToggle={toggleTask} onSubmit={submitTask} />
+                            <TodayTasks
+                                tasks={tasks}
+                                onToggle={toggleTask}
+                                onSubmit={submitTask}
+                                onCreateTask={handleCreateTask} // 할 일 생성 버튼 처리
+                            />
                         </>
                     )}
                 </>

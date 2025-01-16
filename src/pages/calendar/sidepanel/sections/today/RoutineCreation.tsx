@@ -168,7 +168,7 @@ const CommentStyleInput = styled(Cap1).attrs({ as: "input" })`
     border: none;
     outline: none;
     transition: border-color 0.3s;
-    background: ${({ theme }) => theme.colors.coolGray10};
+        background: ${({ theme }) => theme.colors.coolGray10};
 
     &:focus {
         border-bottom: 1px solid #6373ff;

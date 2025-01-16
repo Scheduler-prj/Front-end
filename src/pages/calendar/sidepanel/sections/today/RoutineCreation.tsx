@@ -2,16 +2,62 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import {T6, T4, Cap1} from "../../../../../styles/Typography";
 import {ReactComponent as BackButton} from "../../../../../assets/icons/calendar/rightsidebar/BackButton.svg";
+import {useRoutinesStore} from "../../../../../store/feature/routinStore";
+
 
 export const RoutineCreation = ({ onBack }: { onBack: () => void }) => {
-    const [selectedDays, setSelectedDays] = useState<string[]>([]); // 선택된 요일 상태
+    const addRoutine = useRoutinesStore((state) => state.addRoutine);
+
+    const [formData, setFormData] = useState<{
+        title: string;
+        alarm: boolean;
+        comment: string;
+        dotw: string[]; // dotw의 타입을 명시
+    }>({
+        title: "",
+        alarm: false,
+        comment: "",
+        dotw: [],
+    });
+
+    const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        // 폼 검증
+        event.preventDefault(); // 기본 동작 방지
+        if (!formData.title || formData.dotw.length === 0) {
+            alert("루틴 제목과 요일을 입력해주세요.");
+            return;
+        }
+
+        try {
+            // 새로운 루틴 추가
+            await addRoutine({
+                title: formData.title,
+                alarm: formData.alarm,
+                comment: formData.comment,
+                dtow_id: formData.dotw.length, // 선택된 요일 수를 ID로 (더미 로직) -> 실제 API에 맞춰 수정 필요
+            });
+            alert("루틴이 생성되었습니다!");
+            // 폼 초기화
+            setFormData({
+                title: "",
+                alarm: false,
+                comment: "",
+                dotw: [],
+            });
+
+            onBack();  // 루틴 생성 후 목록 화면으로 자동 전환
+        } catch (error) {
+            alert("루틴 생성 중 오류가 발생했습니다.");
+        }
+    };
 
     const toggleDay = (day: string) => {
-        if (selectedDays.includes(day)) {
-            setSelectedDays(selectedDays.filter((selectedDay) => selectedDay !== day)); // 이미 선택된 경우 제거
-        } else {
-            setSelectedDays([...selectedDays, day]); // 선택되지 않은 경우 추가
-        }
+        setFormData((prev) => ({
+            ...prev,
+            dotw: prev.dotw.includes(day)
+                ? prev.dotw.filter((selectedDay) => selectedDay !== day) // 선택된 경우 제거
+                : [...prev.dotw, day], // 선택되지 않은 경우 추가
+        }));
     };
 
     return (
@@ -26,6 +72,8 @@ export const RoutineCreation = ({ onBack }: { onBack: () => void }) => {
                     <TitleStyledInput
                         type="text"
                         placeholder="루틴 제목"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })} // 상태 업데이트
                         onFocus={(e) => (e.target.placeholder = "")}
                         onBlur={(e) => (e.target.placeholder = "루틴 제목")}
                     />
@@ -34,6 +82,8 @@ export const RoutineCreation = ({ onBack }: { onBack: () => void }) => {
                     <CommentStyleInput
                         type="text"
                         placeholder="코멘트 추가"
+                        value={formData.comment}  // 상태와 연결
+                        onChange={(e) => setFormData({ ...formData, comment: e.target.value })} // 상태 업데이트
                         onFocus={(e) => (e.target.placeholder = "")}
                         onBlur={(e) => (e.target.placeholder = "코멘트 추가")}
                     />
@@ -46,7 +96,7 @@ export const RoutineCreation = ({ onBack }: { onBack: () => void }) => {
                             <DayButton
                                 type="button"
                                 key={index}
-                                selected={selectedDays.includes(day)} // 선택 여부에 따라 스타일 적용
+                                selected={formData.dotw.includes(day)} // 선택 여부에 따라 스타일 적용
                                 onClick={() => toggleDay(day)}
                             >
                                 {day}
@@ -56,9 +106,13 @@ export const RoutineCreation = ({ onBack }: { onBack: () => void }) => {
                 </DaySelector>
                 <LabelInline>
                     <InputTitle>알림</InputTitle>
-                    <Checkbox type="checkbox" />
+                    <Checkbox
+                        type="checkbox"
+                        checked={formData.alarm} // 상태와 연결
+                        onChange={(e) => setFormData({ ...formData, alarm: e.target.checked })} // 상태 업데이트
+                    />
                 </LabelInline>
-                <SubmitButton>생성하기</SubmitButton>
+                <SubmitButton onClick={handleSubmit}>생성하기</SubmitButton>
             </Form>
         </CreationWrapper>
     );

@@ -9,10 +9,13 @@ import {useRoutinesStore} from "../../../../../store/feature/routinStore";
 export const Routine = ({ onCreate }: { onCreate: () => void }) => {
     const { routines, toggleRoutine, fetchRoutines } = useRoutinesStore();
 
+    console.log("현재 루틴 상태 : ", routines);
     // 컴포넌트 마운트 시 루틴 데이터 가져오기
     useEffect(() => {
-        fetchRoutines();
-    }, [fetchRoutines]);
+        console.log("fetchRoutines 호출됨");
+        fetchRoutines(); // 초기 데이터 로드
+    }, []);
+
 
     return (
         <RoutineWrapper>

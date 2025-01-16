@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import {T6, T4, Cap1} from "../../../../../styles/Typography";
+import {T6, T4, Cap1, Cap2} from "../../../../../styles/Typography";
 import { ReactComponent as BackButton } from "../../../../../assets/icons/calendar/rightsidebar/BackButton.svg";
 
 export const TaskCreation = ({ onBack }: { onBack: () => void }) => {
@@ -12,6 +12,40 @@ export const TaskCreation = ({ onBack }: { onBack: () => void }) => {
         isAllDay: false,
         alarm: true,
     });
+
+    // 숨겨진 date input 을 조작하기 위한 ref
+    const dateInputRef = useRef<HTMLInputElement>(null);
+
+    // 날짜 선택 시 상태 업데이트
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, date: e.target.value });
+    };
+
+    // "시간 설정" 버튼 클릭 시 숨겨진 input 클릭
+    const handleTimeSetClick = () => {
+        if (dateInputRef.current) {
+            dateInputRef.current.style.display = "block"; // input 보이기
+            dateInputRef.current.focus(); // 포커스 이동
+        }
+    };
+
+    // date input 포커스 해제 시 숨기기
+    const handleDateBlur = () => {
+        if (dateInputRef.current) {
+            dateInputRef.current.style.display = "none"; // 다시 숨김
+        }
+    };
+
+    const formatDate = (dateString: string): string => {
+        const date = new Date(dateString);
+        const options: Intl.DateTimeFormatOptions = {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            weekday: "short",
+        };
+        return date.toLocaleDateString("ko-KR", options).replace(/\./g, ". ");
+    };
 
     const selectColor = (color: string) => {
         setFormData((prev) => ({
@@ -42,11 +76,26 @@ export const TaskCreation = ({ onBack }: { onBack: () => void }) => {
                     />
                 </Label>
                 <Label>
-                    <Input
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    />
+                    <DateSelector>
+                        {formData.date ? (
+                            <span>{formatDate(formData.date)}</span>
+                        ) : (
+                            <Placeholder>연도. 월. 일.</Placeholder>
+                        )}
+                        <TimeSetButton
+                            type="button"  //버튼 타입 지정
+                            onClick={handleTimeSetClick}  // 버튼 클릭 시 숨겨진 input 트리거
+                        >
+                            시간 설정
+                        </TimeSetButton>
+                        <HiddenDateInput
+                            ref={dateInputRef}
+                            type="date"
+                            value={formData.date}
+                            onChange={handleDateChange}
+                            onBlur={handleDateBlur} // 포커스 해제 시 숨김
+                        />
+                    </DateSelector>
                 </Label>
                 <Label>
                     <CommentInput
@@ -114,6 +163,39 @@ const Header = styled.div`
     width: 100%;
 `;
 
+const DateSelector = styled.div`
+    display: flex;
+    justify-content: space-between; /* 왼쪽과 오른쪽 요소 간 간격 조정 */
+    align-items: center; /* 세로축 중앙 정렬 */
+    align-self: stretch; /* 부모 요소 너비에 맞춤 */
+    min-width: 214px; /* 최소 너비 */
+    max-width: 364px; /* 최대 너비 */
+    width: 100%; /* 기본적으로 부모에 맞춤 */
+    gap: 8px; /* 요소 간 간격 */
+`;
+
+const HiddenDateInput = styled.input`
+    display: none; /* 기본적으로 숨김 */
+    position: relative;
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+`;
+
+const TimeSetButton = styled(Cap2).attrs({as: 'button'})`
+    border: none; /* 테두리 제거 */
+    border-radius: 4px; /* 둥근 모서리 */
+    color: ${({ theme }) => theme.colors.warmGray2};; /* 텍스트 색상 */
+`;
+
+const Placeholder = styled.span`
+    color: #aaa; /* 텍스트 색상 */
+    font-size: 14px; /* 폰트 크기 */
+    line-height: 1.5; /* 줄 높이 */
+`;
+
 const Title = styled(T6)`
 `;
 
@@ -146,7 +228,7 @@ const TitleStyledInput = styled(T4).attrs({ as: "input" })`
 
     &:focus {
         border-bottom: 1px solid #6373ff;
-    }
+    }w
 
     &::placeholder {
         color: #aaa;
@@ -162,12 +244,6 @@ const Label = styled.div`
     width: 100%;
 `;
 
-const Input = styled.input`
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-`;
 
 const CommentInput = styled(Cap1).attrs({ as: "textarea" })`
     display: flex;

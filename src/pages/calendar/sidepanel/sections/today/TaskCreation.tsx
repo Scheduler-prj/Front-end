@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import {T6, T4, Cap1, Cap2} from "../../../../../styles/Typography";
+import { useTheme } from "styled-components";
 import { ReactComponent as BackButton } from "../../../../../assets/icons/calendar/rightsidebar/BackButton.svg";
 
 export const TaskCreation = ({ onBack }: { onBack: () => void }) => {
@@ -35,6 +36,15 @@ export const TaskCreation = ({ onBack }: { onBack: () => void }) => {
             dateInputRef.current.style.display = "none"; // 다시 숨김
         }
     };
+
+    const theme = useTheme(); // theme 객체 가져오기
+    const colors = [
+        theme.colors.category.red, // theme.tsx 에 정의된 red
+        theme.colors.category.green, // theme.tsx 에 정의된 green
+        theme.colors.category.blue, // theme.tsx 에 정의된 blue
+        theme.colors.category.yellow, // theme.tsx 에 정의된 yellow
+        theme.colors.category.purple, // theme.tsx 에 정의된 purple
+    ];
 
     const formatDate = (dateString: string): string => {
         const date = new Date(dateString);
@@ -108,12 +118,13 @@ export const TaskCreation = ({ onBack }: { onBack: () => void }) => {
                 <ColorSelector>
                     <span>컬러 선택</span>
                     <ColorOptions>
-                        {["red", "green", "blue", "yellow", "purple"].map((color) => (
+                        {/* theme.tsx 에서 가져온 색상들 출력 */}
+                        {colors.map((color, index) => (
                             <ColorCircle
-                                key={color}
+                                key={index}
                                 color={color}
-                                selected={formData.color === color}
-                                onClick={() => selectColor(color)}
+                                selected={formData.color === color} // 선택된 색상 확인
+                                onClick={() => setFormData({ ...formData, color })} // 선택한 색상 업데이트
                             />
                         ))}
                     </ColorOptions>
@@ -190,7 +201,7 @@ const TimeSetButton = styled(Cap2).attrs({as: 'button'})`
     color: ${({ theme }) => theme.colors.warmGray2};; /* 텍스트 색상 */
 `;
 
-const Placeholder = styled.span`
+const Placeholder = styled(Cap1)`
     color: #aaa; /* 텍스트 색상 */
     font-size: 14px; /* 폰트 크기 */
     line-height: 1.5; /* 줄 높이 */
@@ -244,7 +255,6 @@ const Label = styled.div`
     width: 100%;
 `;
 
-
 const CommentInput = styled(Cap1).attrs({ as: "textarea" })`
     display: flex;
     height: 100px;
@@ -262,7 +272,8 @@ const CommentInput = styled(Cap1).attrs({ as: "textarea" })`
 
 const ColorSelector = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center; /* 수직 중앙 정렬 */
     gap: 8px;
     width: 100%;
 `;
@@ -277,12 +288,19 @@ const ColorCircle = styled.div<{ color: string; selected: boolean }>`
     height: 24px;
     border-radius: 50%;
     background-color: ${(props) => props.color};
-    border: ${(props) => (props.selected ? "2px solid black" : "1px solid #ccc")};
+    border: 2px solid
+    ${(props) =>
+            props.selected
+                    ? props.theme.colors.primary // 선택된 경우 Primary 색상
+                    : props.theme.colors.white}; // 기본 테두리 색상
     cursor: pointer;
+    transition: border-color 0.3s ease; // 테두리 색상 전환 효과
 `;
 
 const CheckboxWrapper = styled.div`
     display: flex;
+    flex-direction: column;
+    align-items: center; /* 텍스트와 체크박스 중앙 정렬 */
     gap: 16px;
 `;
 
@@ -290,14 +308,16 @@ const LabelInline = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
+    align-self: stretch;
 `;
 
 const Checkbox = styled.input`
     width: 20px;
     height: 20px;
+    margin: 0; /* 브라우저 기본 마진 초기화 */
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(T6).attrs({ as: "button" })`
     width: 100%;
     padding: 12px;
     font-size: 16px;

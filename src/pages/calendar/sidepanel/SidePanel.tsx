@@ -13,7 +13,6 @@ export const SidePanel = () => {
     const [isCreatingRoutine, setIsCreatingRoutine] = useState(false); // 루틴 생성 상태 관리
     const [isCreatingTask, setIsCreatingTask] = useState(false); // 할 일 생성 상태 관리
 
-
     // 루틴 생성 화면으로 이동
     const handleCreateRoutine = () => {
         setIsCreatingRoutine(true);
@@ -22,26 +21,6 @@ export const SidePanel = () => {
     // 루틴 목록 화면으로 돌아가기
     const handleBackToRoutineList = () => {
         setIsCreatingRoutine(false);
-    };
-
-
-    // 오늘의 할 일 데이터
-    const tasks = [
-        { id: 1, title: "교양 과제1", completed: true, date: "10/1" },
-        { id: 2, title: "수학 챕터1~2 강의 듣기", completed: true, date: "10/1" },
-        { id: 3, title: "수학 문제2개 풀기", completed: false, date: "10/1" },
-    ];
-
-    // 오늘의 할 일 상태 토글 함수
-    const toggleTask = (id: number) => {
-        console.log(`할 일 ${id} 상태 변경`);
-        // 상태 변경 로직을 구현 예정(useState 등 사용 가능)
-    };
-
-    // 성과 제출 함수
-    const submitTask = (id: number) => {
-        console.log(`성과 제출: ${id}`);
-        // 성과 제출 로직을 구현 예정
     };
 
     // 할 일 생성 화면으로 이동
@@ -68,12 +47,7 @@ export const SidePanel = () => {
                     ) : (
                         <>
                             <Routine onCreate={handleCreateRoutine} />
-                            <TodayTasks
-                                tasks={tasks}
-                                onToggle={toggleTask}
-                                onSubmit={submitTask}
-                                onCreateTask={handleCreateTask} // 할 일 생성 버튼 처리
-                            />
+                            <TodayTasks onCreateTask={handleCreateTask} />
                         </>
                     )}
                 </>

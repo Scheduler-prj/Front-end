@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {T6, T4, Cap1, Cap2} from "../../../../../styles/Typography";
 import { useTheme } from "styled-components";
 import { ReactComponent as BackButton } from "../../../../../assets/icons/calendar/rightsidebar/BackButton.svg";
+import {useTasksStore} from "../../../../../store/feature/tasksStore";
 
 export const TaskCreation = ({ onBack }: { onBack: () => void }) => {
     const [formData, setFormData] = useState({
@@ -57,16 +58,44 @@ export const TaskCreation = ({ onBack }: { onBack: () => void }) => {
         return date.toLocaleDateString("ko-KR", options).replace(/\./g, ". ");
     };
 
-    const selectColor = (color: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            color,
-        }));
-    };
+    // const selectColor = (color: string) => {
+    //     setFormData((prev) => ({
+    //         ...prev,
+    //         color,
+    //     }));
+    // };
+
+    const {createTask} = useTasksStore();
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        console.log("폼 데이터:", formData); // 디버깅용
+
+        // 폼 검증 추가 기능
+        if (!formData.title || !formData.date) {
+            alert("제목과 날짜는 필수입니다");
+            return;
+        };
+
+        //  'formData' 를 기반으로 'Task' 객체 생성
+        const newTask = {
+            title: formData.title,
+            todoAt: formData.date,
+            color: formData.color,
+            planAlarm: formData.alarm,
+            planComment: formData.comment,
+            completed: false, // 초기값으로 false
+        };
+
+        // `createTask` 호출
+        createTask(newTask)
+            .then(() => {
+                alert("할 일이 성공적으로 생성되었습니다!");
+                onBack(); // 뒤로 돌아가기
+            })
+            .catch((error) => {
+                console.error("Error creating task:", error);
+                alert("할 일을 생성하는 도중 오류가 발생했습니다.");
+            });
     };
 
     return (

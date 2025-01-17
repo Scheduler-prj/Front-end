@@ -12,7 +12,7 @@ export const RoutineCreation = ({ onBack }: { onBack: () => void }) => {
         title: string;
         alarm: boolean;
         comment: string;
-        dotw: string[]; // dotw의 타입을 명시
+        dotw: string[]; // dotw 의 타입을 명시
     }>({
         title: "",
         alarm: false,

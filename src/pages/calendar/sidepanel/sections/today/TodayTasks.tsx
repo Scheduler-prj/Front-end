@@ -3,14 +3,15 @@ import styled from "styled-components";
 import {T6, B6, SubT1} from "../../../../../styles/Typography";
 import { ReactComponent as Create } from "../../../../../assets/icons/calendar/rightsidebar/Create.svg";
 import { ReactComponent as Edit } from "../../../../../assets/icons/calendar/rightsidebar/Edit.svg";
+import {useTasksStore} from "../../../../../store/feature/tasksStore";
+
 interface TaskProps {
-    tasks: { id: number; title: string; completed: boolean; date: string }[];
-    onToggle: (id: number) => void;
-    onSubmit: (id: number) => void;
     onCreateTask: () => void;
 }
 
-export const TodayTasks = ({ tasks, onToggle, onSubmit, onCreateTask }: TaskProps) => {
+export const TodayTasks = ({ onCreateTask }: TaskProps) => {
+    const {tasks, toggleTask, submitTask} = useTasksStore();
+
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
 
@@ -30,14 +31,14 @@ export const TodayTasks = ({ tasks, onToggle, onSubmit, onCreateTask }: TaskProp
                     <SectionHeader completed={true}>완료</SectionHeader>
                     <TasksList>
                         {completedTasks.map((task) => (
-                            <TaskItem key={task.id} completed={task.completed}>
-                                <TaskDate>{task.date}</TaskDate>
+                            <TaskItem key={task.todoId} completed={task.completed}>
+                                <TaskDate>{task.todoAt}</TaskDate>
                                 <TaskContent>
                                     <TaskTitle>{task.title}</TaskTitle>
                                     <Checkbox
                                         type="checkbox"
                                         checked={task.completed}
-                                        onChange={() => onToggle(task.id)}
+                                        onChange={() => toggleTask(task.todoId)}
                                     />
                                 </TaskContent>
                             </TaskItem>
@@ -52,17 +53,17 @@ export const TodayTasks = ({ tasks, onToggle, onSubmit, onCreateTask }: TaskProp
                     <SectionHeader completed={false}>미완료</SectionHeader>
                     <TasksList>
                         {incompleteTasks.map((task) => (
-                            <TaskItem key={task.id} completed={task.completed}>
-                                <TaskDate>{task.date}</TaskDate>
+                            <TaskItem key={task.todoId} completed={task.completed}>
+                                <TaskDate>{task.todoAt}</TaskDate>
                                 <TaskContent>
                                     <TaskTitle>{task.title}</TaskTitle>
-                                    <SubmitButton onClick={() => onSubmit(task.id)}>
+                                    <SubmitButton onClick={() => submitTask(task.todoId)}>
                                         성과 제출
                                     </SubmitButton>
                                     <Checkbox
                                         type="checkbox"
                                         checked={task.completed}
-                                        onChange={() => onToggle(task.id)}
+                                        onChange={() => toggleTask(task.todoId)}
                                     />
                                 </TaskContent>
                             </TaskItem>

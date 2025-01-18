@@ -7,12 +7,13 @@ import Row from "../../../styles/Layouts/Row";
 import { SolveQuizStore } from "../SolveQuizStore";
 import { QuizAnswer } from "./QuizAnswer";
 import NextQuizButton from "../Common/NextQuizButton";
+import QuizWrapper from "../../Common/Quiz/QuizWrapper";
 
 export const QuizContent = () => {
   const { selectedQuiz, setSelectedQuiz } = SolveQuizStore();
 
   return (
-    <S.Wrapper>
+    <QuizWrapper>
       {/* 이것도 컴포넌트 - 헤더 로 뺄까? */}
       <T6>{"문항 10 / 15"}</T6>
       <Row
@@ -57,6 +58,6 @@ export const QuizContent = () => {
         <QuizAnswer />
         <NextQuizButton isQuizContent={true} />
       </Row>
-    </S.Wrapper>
+    </QuizWrapper>
   );
 };

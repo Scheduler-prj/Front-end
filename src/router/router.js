@@ -9,6 +9,7 @@ const QuizList = NamedLazy(() => import("../pages/quiz-list/QuizListPage"), "Qui
 const Dashboard = NamedLazy(() => import("../pages/dashboard/DashboardPage"), "DashboardPage");
 const Result = NamedLazy(() => import("../pages/results/ResultPage"), "ResultPage");
 const Quiz = NamedLazy(() => import("../pages/solve-quiz/QuizPage"), "QuizPage");
+const QuizResult = NamedLazy(() => import("../pages/result-quiz/QuizResult"), "QuizResult");
 
 export const router = createBrowserRouter([
     {
@@ -59,6 +60,14 @@ export const router = createBrowserRouter([
                 element : (
                     <Suspense fallback={<div>Loading...</div>}>
                         <Quiz/>
+                    </Suspense>
+                )
+            },
+            {
+                path : "quiz/result",
+                element : (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <QuizResult/>
                     </Suspense>
                 )
             },

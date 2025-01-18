@@ -5,9 +5,9 @@ import { B2, T2, T6 } from "../../../styles/Typography";
 import * as S from "./style";
 import Row from "../../../styles/Layouts/Row";
 import { SolveQuizStore } from "../SolveQuizStore";
-import { QuizAnswer } from "./QuizAnswer";
-import NextQuizButton from "../Common/NextQuizButton";
+import NextQuizButton from "../../Common/Quiz/NextQuizButton";
 import QuizWrapper from "../../Common/Quiz/QuizWrapper";
+import QuizAnswer from "../../Common/Quiz/QuizAnswer";
 
 export const QuizContent = () => {
   const { selectedQuiz, setSelectedQuiz } = SolveQuizStore();

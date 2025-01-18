@@ -1,17 +1,12 @@
 import { T6 } from "../../../styles/Typography";
-import { SolveQuizStore } from "../SolveQuizStore";
+import { SolveQuizStore } from "../../SolveQuiz/SolveQuizStore";
 import { theme } from "../../../styles/theme";
-
 import * as S from "./style";
-import useDeviceQueries from "../../../hook/useDeviceQueries";
 
 const NextQuizButton = ({ isQuizContent }: { isQuizContent: boolean }) => {
   const { isChecked } = SolveQuizStore();
   return (
-    <S.CheckAnswer
-      isChecked={isChecked}
-      isQuizContent={isQuizContent}
-    >
+    <S.CheckAnswer isChecked={isChecked} isQuizContent={isQuizContent}>
       <T6
         style={{
           color: isChecked ? "#fff" : theme.colors.coolGray4,

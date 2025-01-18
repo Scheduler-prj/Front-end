@@ -3,7 +3,7 @@ import * as S from "./style";
 import { theme } from "../../../styles/theme";
 import Column from "../../../styles/Layouts/Column";
 import Row from "../../../styles/Layouts/Row";
-import NextQuizButton from "../Common/NextQuizButton";
+import NextQuizButton from "../../Common/Quiz/NextQuizButton";
 import useDeviceQueries from "../../../hook/useDeviceQueries";
 
 export default function CommonContent() {

@@ -6,7 +6,7 @@ export const QuizResult = () => {
 	return (
 		<Row style={{ padding: "2.43%" }}>
 			<QuizResultContent />
-			<QuizPannel pageType="quizResult" />
+			<QuizPannel />
 		</Row>
 	);
 };

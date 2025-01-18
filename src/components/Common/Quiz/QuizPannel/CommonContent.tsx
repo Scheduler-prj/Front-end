@@ -5,17 +5,18 @@ import Row from "../../../../styles/Layouts/Row";
 import NextQuizButton from "../NextQuizButton";
 import { B2, B4, B6, T5, T7 } from "../../../../styles/Typography";
 import { theme } from "../../../../styles/theme";
+import SelectBtn from "../../SelectBtn";
+import { useGetLocationList } from "../../../../hook/useGetLocationList";
 
-export default function CommonContent({ pageType }: { pageType: "quiz" | "quizResult" }) {
+export default function CommonContent() {
+	const pageType = useGetLocationList();
 	const { isDesktop } = useDeviceQueries();
 	return (
 		<>
 			{/* 푼문제 번호 */}
 			<S.QuizNumberWrapper>
 				{[1, 2, 3, 4, 5, 6, 6, 7, 8, 8, 8, 9, 9, 10].map((number, index) => (
-					<S.QuizNumber key={index}>
-						<T7 style={{ color: "#fff" }}>{number}</T7>
-					</S.QuizNumber>
+					<SelectBtn key={index} width={36} FontSize={T7} buttonType={"solved"} num={number} />
 				))}
 			</S.QuizNumberWrapper>
 			{/* 푼 퀴즈 및 맞은 퀴즈 */}

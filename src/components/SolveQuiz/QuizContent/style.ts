@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../../../styles/media";
 
 export const Wrapper = styled.div`
   width: 70%;
@@ -7,6 +8,9 @@ export const Wrapper = styled.div`
   border-radius: 24px;
   background-color: #fff;
   margin-right: 1.95%;
+  ${media.tablet`
+  width: 100%;
+  `}
 `;
 
 export const QuizBtn = styled.button<{ selected: boolean }>`
@@ -43,4 +47,7 @@ export const Number = styled.div`
   width: 24px;
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.primary};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

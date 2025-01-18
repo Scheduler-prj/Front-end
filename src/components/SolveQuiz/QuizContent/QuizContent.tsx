@@ -6,6 +6,7 @@ import * as S from "./style";
 import Row from "../../../styles/Layouts/Row";
 import { SolveQuizStore } from "../SolveQuizStore";
 import { QuizAnswer } from "./QuizAnswer";
+import NextQuizButton from "../Common/NextQuizButton";
 
 export const QuizContent = () => {
   const { selectedQuiz, setSelectedQuiz } = SolveQuizStore();
@@ -52,7 +53,10 @@ export const QuizContent = () => {
         ))}
       </Row>
       {/* 정답 확인 후 로직 필요 */}
-      <QuizAnswer />
+      <Row verticalAlign={"bottom"}>
+        <QuizAnswer />
+        <NextQuizButton isQuizContent={true} />
+      </Row>
     </S.Wrapper>
   );
 };

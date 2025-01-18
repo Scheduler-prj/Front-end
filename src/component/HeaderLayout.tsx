@@ -25,7 +25,7 @@ export const HeaderLayout = ({ currentPage, isLoggedIn }: HeaderLayoutProps) => 
             case "result":
                 return null;
             case "quiz":
-                return null;
+                return "퀴즈 풀기";
         }
     };
 

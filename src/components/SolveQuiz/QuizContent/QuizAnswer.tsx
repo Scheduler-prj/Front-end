@@ -9,8 +9,8 @@ export const QuizAnswer = () => {
     <S.QuizAnswer>
       <Column gap={12}>
         <Row gap={10} verticalAlign="center" horizonAlign="center">
-          <S.Number style={{ color: "#fff" }}>
-            <B6 style={{ textAlign: "center" }}>{"1"}</B6>
+          <S.Number>
+            <B6 style={{ color: "#fff" }}>{"1"}</B6>
           </S.Number>
           <B3>{"정답"}</B3>
         </Row>

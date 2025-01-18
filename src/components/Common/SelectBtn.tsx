@@ -29,7 +29,7 @@ const SelectBtnStyle = styled(Column)<{
   buttonType: "default" | "correct" | "unselected" | "wrong";
   width: number;
 }>`
-    width: ${({ width }) => `${width}px`};
+  width: ${({ width }) => `${width}px`};
   height: ${({ width }) => `${width}px`};
   border-radius: 50%;
   background-color: ${({ buttonType, theme }) =>

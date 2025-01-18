@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 
-import { B2, T6 } from "../../../../styles/Typography";
-import { theme } from "../../../../styles/theme";
 import * as S from "./style";
+import { theme } from "../../../../../styles/theme";
+import { B2, T6 } from "../../../../../styles/Typography";
 
-export const DurationTime = () => {
+//퀴즈 결과라면 시간이 가면안됨
+export const DurationTime = ({
+  pageType,
+  durationTime,
+}: {
+  pageType: "quiz" | "quizResult";
+  durationTime?: number;
+}) => {
   const [time, setTime] = useState({ minutes: 0, seconds: 0 });
 
   useEffect(() => {
+    if (pageType !== "quiz") return;
+
     const timer = setInterval(() => {
       setTime((prevTime) => {
         const { minutes, seconds } = prevTime;
@@ -33,7 +42,9 @@ export const DurationTime = () => {
   return (
     <S.TotalDuration>
       <T6 style={{ color: theme.colors.coolGray2 }}>{"총 소요시간"}</T6>
-      <B2 style={{ color: theme.colors.primary }}>{formatTime(time)}</B2>
+      <B2 style={{ color: theme.colors.primary }}>
+        {durationTime ? durationTime : formatTime(time)}
+      </B2>
     </S.TotalDuration>
   );
 };

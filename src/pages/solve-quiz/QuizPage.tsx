@@ -1,10 +1,11 @@
+import { useState } from "react";
+
 import { SolveQuizMain } from "../../components/SolveQuiz/SolveQuizMain";
 import Row from "../../styles/Layouts/Row";
 import styled from "styled-components";
 import BookMark from "../../assets/icon/solveQuiz/bookMark.svg";
-import { useState } from "react";
 import useDeviceQueries from "../../hook/useDeviceQueries";
-import TabletModePannel from "../../components/SolveQuiz/TotalQuizPannel/TabletModePannel";
+import TabletModePannel from "../../components/Common/Quiz/QuizPannel/TabletModePannel";
 
 export const QuizPage = () => {
   const { isTablet } = useDeviceQueries();

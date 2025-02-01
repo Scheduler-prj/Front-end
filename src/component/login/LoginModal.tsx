@@ -11,10 +11,14 @@ interface LoginModalProps {
 }
 
 export const LoginModal = ({onClose, onLogin}: LoginModalProps) => {
-    const handleLoginClick = () => {
-        onLogin();  // 로그인 상태 업데이트
+
+    const handleSocialLogin = (provider: "google" | "kakao" | "naver") => {
+        onLogin();
         onClose();  // 모달 달기
+        const baseURL = "로그인 경로";
+        window.location.href = `${baseURL}/auth/${provider}`; // 소셜 로그인 요청
     }
+
     return (
         <Overlay>
             <ModalWrapper>
@@ -25,15 +29,15 @@ export const LoginModal = ({onClose, onLogin}: LoginModalProps) => {
                     <Title>Log in</Title>
                     <Subtitle>SNS 계정으로 간편 가입하기</Subtitle>
                     <ButtonContainer>
-                        <LoginButton onClick={handleLoginClick}>
+                        <LoginButton onClick={() => handleSocialLogin("kakao")}>
                             <KakaoIcon />
                             <span>카카오로 로그인</span>
                         </LoginButton>
-                        <LoginButton onClick={handleLoginClick}>
+                        <LoginButton onClick={() => handleSocialLogin("naver")}>
                             <NaverIcon />
                             <span>네이버로 로그인</span>
                         </LoginButton>
-                        <LoginButton onClick={handleLoginClick}>
+                        <LoginButton onClick={() => handleSocialLogin("google")}>
                             <GoogleIcon />
                             <span>구글로 로그인</span>
                         </LoginButton>

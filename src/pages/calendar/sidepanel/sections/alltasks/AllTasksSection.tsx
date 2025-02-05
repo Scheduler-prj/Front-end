@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import {useTasksStore} from "../../../../../store/feature/tasksStore";
 import { ReactComponent as Edit } from "../../../../../assets/icons/calendar/rightsidebar/Edit.svg"
 import {SubT1, T6, T7} from "../../../../../styles/Typography";
+import {TaskCreation} from "../today/TaskCreation";
 
 export const AllTasksSection = () => {
     const {tasks, fetchTasks, toggleTask, submitTask} = useTasksStore();
@@ -10,6 +11,20 @@ export const AllTasksSection = () => {
     // 🔹 완료된/미완료된 할 일 분리
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
+
+    const [isCreating, setIsCreating] = useState(false);
+
+    const handleCreateClick = () => {
+        setIsCreating(true); // "할 일 생성하기" 버튼 클릭 시 상태 변경
+    };
+
+    const handleBack = () => {
+        setIsCreating(false); // TaskCreation 에서 뒤로가기 시 상태 복귀
+    };
+
+    if (isCreating) {
+        return <TaskCreation onBack={handleBack} />;
+    }
 
     return (
         <AllTasksWrapper>
@@ -43,7 +58,7 @@ export const AllTasksSection = () => {
                     </TaskItem>
                 ))}
             </TasksList>
-            <CreateButton>할 일 생성하기</CreateButton>
+            <CreateButton onClick={handleCreateClick}>할 일 생성하기</CreateButton>
         </AllTasksWrapper>
     );
 };

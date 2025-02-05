@@ -62,14 +62,16 @@ export const TodayTasks = ({ onCreateTask }: TaskProps) => {
                                 <TaskDate>{task.todoAt}</TaskDate>
                                 <TaskContent>
                                     <TaskTitle>{task.title}</TaskTitle>
-                                    <SubmitButton onClick={() => submitTask(task.todoId)}>
-                                        성과 제출
-                                    </SubmitButton>
-                                    <Checkbox
-                                        type="checkbox"
-                                        checked={task.completed}
-                                        onChange={() => toggleTask(task.todoId)}
-                                    />
+                                    <ButtonGroup>
+                                        <SubmitButton onClick={() => submitTask(task.todoId)}>
+                                            성과 제출
+                                        </SubmitButton>
+                                        <Checkbox
+                                            type="checkbox"
+                                            checked={task.completed}
+                                            onChange={() => toggleTask(task.todoId)}
+                                        />
+                                    </ButtonGroup>
                                 </TaskContent>
                             </TaskItem>
                         ))}
@@ -144,6 +146,12 @@ const TasksList = styled.ul`
     width: 100%;
 `;
 
+const ButtonGroup = styled.div`
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 8px; /* 버튼과 체크박스 사이 간격 */
+`;
+
 const TaskItem = styled.li<{ completed: boolean }>`
     width: 100%;
     display: flex;
@@ -176,6 +184,7 @@ const TaskContent = styled.div`
     align-items: center;
     flex: 1;
     gap: 8px;
+    width: 100%;
 `;
 
 const TaskTitle = styled(SubT1)`

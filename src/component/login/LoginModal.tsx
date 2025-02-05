@@ -15,8 +15,9 @@ export const LoginModal = ({onClose, onLogin}: LoginModalProps) => {
     const handleSocialLogin = (provider: "google" | "kakao" | "naver") => {
         onLogin();
         onClose();  // 모달 달기
-        const baseURL = "로그인 경로";
-        window.location.href = `${baseURL}/auth/${provider}`; // 소셜 로그인 요청
+        const baseURL = "url";
+        const redirectURI = `url/oauth/callback`; // 소셜 로그인 성공 후 이동할 경로
+        window.location.href = `${baseURL}/oauth2/authorization/${provider}?redirect_uri=${redirectURI}`; // 소셜 로그인 요청
     }
 
     return (

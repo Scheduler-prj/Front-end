@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import {T6, B6, SubT1} from "../../../../../styles/Typography";
 import { ReactComponent as Create } from "../../../../../assets/icons/calendar/rightsidebar/Create.svg";
@@ -10,10 +10,15 @@ interface TaskProps {
 }
 
 export const TodayTasks = ({ onCreateTask }: TaskProps) => {
-    const {tasks, toggleTask, submitTask} = useTasksStore();
+    const {tasks, toggleTask, submitTask, fetchTasks} = useTasksStore();
 
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
+
+    // 🔹 컴포넌트가 마운트될 때 더미 데이터 로드
+    useEffect(() => {
+        fetchTasks();
+    }, [fetchTasks])
 
     return (
         <TasksWrapper>

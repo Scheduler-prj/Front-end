@@ -3,7 +3,7 @@
 import {create} from "zustand/react";
 import axios from "axios"; // axios 직접 가져오기
 
-interface Task {
+export interface Task {
     todoId: number;
     title: string;
     todoAt: string; // 날짜는 문자열로 반환됨

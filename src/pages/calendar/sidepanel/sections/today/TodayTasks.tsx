@@ -1,24 +1,31 @@
-import React, {useEffect} from "react";
+import React, { useState, useEffect} from "react";
 import styled from "styled-components";
 import {T6, T7, B6, SubT1} from "../../../../../styles/Typography";
 import { ReactComponent as Create } from "../../../../../assets/icons/calendar/rightsidebar/Create.svg";
 import { ReactComponent as Edit } from "../../../../../assets/icons/calendar/rightsidebar/Edit.svg";
 import {useTasksStore} from "../../../../../store/feature/tasksStore";
+import {Task} from "../../../../../store/feature/tasksStore"
 
 interface TaskProps {
     onCreateTask: () => void;
+    onSubmit: (task: Task) => void;
 }
 
-export const TodayTasks = ({ onCreateTask }: TaskProps) => {
-    const {tasks, toggleTask, submitTask, fetchTasks} = useTasksStore();
+export const TodayTasks = ({ onCreateTask, onSubmit }: TaskProps) => {
+    const {tasks, toggleTask, fetchTasks} = useTasksStore();
 
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
 
-    // 🔹 컴포넌트가 마운트될 때 더미 데이터 로드
+    const handleSubmitClick = (task: Task) => {
+        onSubmit(task); // 부모 컴포넌트로 `onSubmit` 콜백 전달
+    };
+
+    // 컴포넌트가 마운트될 때 더미 데이터 로드
     useEffect(() => {
         fetchTasks();
     }, [fetchTasks])
+
 
     return (
         <TasksWrapper>
@@ -71,7 +78,7 @@ export const TodayTasks = ({ onCreateTask }: TaskProps) => {
                                 <TaskContent>
                                     <TaskTitle>{task.title}</TaskTitle>
                                     <ButtonGroup>
-                                        <SubmitButton onClick={() => submitTask(task.todoId)}>
+                                        <SubmitButton onClick={() => handleSubmitClick(task)}>
                                             성과 제출
                                         </SubmitButton>
                                         <Checkbox

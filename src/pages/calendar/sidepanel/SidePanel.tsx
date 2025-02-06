@@ -7,11 +7,16 @@ import {Routine} from "./sections/today/Routine";
 import {TodayTasks} from "./sections/today/TodayTasks";
 import {RoutineCreation} from "./sections/today/RoutineCreation";
 import {TaskCreation} from "./sections/today/TaskCreation";
+import {SubmissionAchieve} from "./SubmissionAchieve";
+import {Task} from "../../../store/feature/tasksStore"
 
 export const SidePanel = () => {
     const [activeTab, setActiveTab] = useState("today");
     const [isCreatingRoutine, setIsCreatingRoutine] = useState(false); // 루틴 생성 상태 관리
     const [isCreatingTask, setIsCreatingTask] = useState(false); // 할 일 생성 상태 관리
+
+    const [isSubmitting, setIsSubmitting] = useState(false); // 성과 제출 상태
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null); // 타입에 null 추가
 
     // 루틴 생성 화면으로 이동
     const handleCreateRoutine = () => {
@@ -33,6 +38,36 @@ export const SidePanel = () => {
         setIsCreatingTask(false);
     };
 
+    // 성과 제출 화면으로 이동
+    const handleStartSubmission = (task:Task) => {
+        setSelectedTask(task);
+        setIsSubmitting(true);
+    };
+
+    // 성과 제출 화면에서 돌아오기
+    const handleBackToTodayTasks = () => {
+        setIsSubmitting(false);
+        setSelectedTask(null);
+    };
+
+    const handleSubmitClick = (comment: string, file: File | null, quizEnabled: boolean) => {
+        if (!selectedTask) {
+            console.error("No task selected for submission.");
+            return;
+        }
+
+        console.log("Submitting task:", {
+            task: selectedTask,
+            comment,
+            file,
+            quizEnabled,
+        });
+
+        // 이후 필요한 작업 (예: 서버 요청)을 추가
+        setIsSubmitting(false);
+        setSelectedTask(null);
+    };
+
     return (
         <PanelWrapper>
             {/* TabNavigation 렌더링 */}
@@ -40,14 +75,23 @@ export const SidePanel = () => {
             {/* 현재 탭에 따른 콘텐츠 렌더링 */}
             {activeTab === "today" && (
                 <>
-                    {isCreatingRoutine ? (
+                    {isSubmitting && selectedTask ? (
+                        <SubmissionAchieve
+                            task={selectedTask}
+                            onBack={handleBackToTodayTasks}
+                            onSubmit={handleSubmitClick}
+                        />
+                    ) : isCreatingRoutine ? (
                         <RoutineCreation onBack={handleBackToRoutineList} />
                     ) : isCreatingTask ? (
                         <TaskCreation onBack={handleBackToTaskList} />
                     ) : (
                         <>
                             <Routine onCreate={handleCreateRoutine} />
-                            <TodayTasks onCreateTask={handleCreateTask} />
+                            <TodayTasks
+                                onCreateTask={handleCreateTask}
+                                onSubmit={handleStartSubmission}
+                            />
                         </>
                     )}
                 </>

@@ -8,10 +8,12 @@ import {TaskCreation} from "../today/TaskCreation";
 export const AllTasksSection = () => {
     const {tasks, fetchTasks, toggleTask, submitTask} = useTasksStore();
 
-    // 🔹 완료된/미완료된 할 일 분리
+    // 완료된/미완료된 할 일 분리
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
 
+    // 상태 관리 (현재 활성화된 탭 상태)
+    const [activeTab, setActiveTab] = useState<"incomplete" | "completed">("incomplete");
     const [isCreating, setIsCreating] = useState(false);
 
     const handleCreateClick = () => {
@@ -26,6 +28,9 @@ export const AllTasksSection = () => {
         return <TaskCreation onBack={handleBack} />;
     }
 
+    // 현재 활성화 된 탭 상태에 따라 렌더링할 데이터를 설정
+    const tasksToRender = activeTab === "incomplete" ? incompleteTasks : completedTasks;
+
     return (
         <AllTasksWrapper>
             <Header>
@@ -34,20 +39,35 @@ export const AllTasksSection = () => {
             </Header>
             <Divider />
             <Tabs>
-                <TabButton selected={true}>미완료</TabButton>
-                <TabButton>완료</TabButton>
+                <TabButton
+                    selected={activeTab === "incomplete"}
+                    onClick={() => setActiveTab("incomplete")}
+                >
+                    미완료
+                </TabButton>
+                <TabButton
+                    selected={activeTab === "completed"}
+                    onClick={() => setActiveTab("completed")}
+                >
+                    완료
+                </TabButton>
             </Tabs>
-            {/* 미완료된 할 일 */}
+            {/* 현재 활성화된 탭의 할 일 렌더링(완료 or 미완료) */}
             <TasksList>
-                {incompleteTasks.map((task) => (
-                    <TaskItem key={task.todoId}>
+                {tasksToRender.map((task) => (
+                    <TaskItem
+                        key={task.todoId}
+                        color={task.color}
+                    >
                         <TaskDate>{task.todoAt}</TaskDate>
                         <TaskContent>
                             <TaskTitle>{task.title}</TaskTitle>
                             <ButtonGroup>
-                                <SubmitButton onClick={() => submitTask(task.todoId)}>
-                                    성과 제출
-                                </SubmitButton>
+                                {activeTab === "incomplete" && (
+                                    <SubmitButton onClick={() => submitTask(task.todoId)}>
+                                        성과 제출
+                                    </SubmitButton>
+                                )}
                                 <Checkbox
                                     type="checkbox"
                                     checked={task.completed}
@@ -113,13 +133,13 @@ const TasksList = styled.ul`
     width: 100%;
 `;
 
-const TaskItem = styled.li`
+const TaskItem = styled.li<{color: string}>`
     width: 100%;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 12px;
-    background-color: #fff6e5;
+    background-color: ${({ color }) => color}; 
     border-radius: 8px;
     margin-bottom: 8px;
 `;

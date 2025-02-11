@@ -24,9 +24,9 @@ interface TasksState {
 
 // 🟢 더미 데이터
 const dummyTasks: Task[] = [
-    { todoId: 1, title: "리액트 공부하기", todoAt: "2/6", color: "#FFD8DA", planAlarm: true, planComment: "", completed: false },
-    { todoId: 2, title: "운동하기", todoAt: "2/6", color: "#FFE8C9", planAlarm: false, planComment: "", completed: true },
-    { todoId: 3, title: "독서 30분 하기", todoAt: "2/6", color: "#D9E2FF" , planAlarm: true, planComment: "", completed: false },
+    { todoId: 1, title: "리액트 공부하기", todoAt: "2/12", color: "#FFD8DA", planAlarm: true, planComment: "", completed: false },
+    { todoId: 2, title: "잠자기", todoAt: "2/12", color: "#FFE8C9", planAlarm: false, planComment: "", completed: true },
+    { todoId: 3, title: "스프링 공부하기", todoAt: "2/21", color: "#D9E2FF" , planAlarm: true, planComment: "", completed: false },
 ];
 
 export const useTasksStore = create<TasksState>((set) => ({

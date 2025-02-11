@@ -15,9 +15,9 @@ export const LoginModal = ({onClose, onLogin}: LoginModalProps) => {
     const handleSocialLogin = (provider: "google" | "kakao" | "naver") => {
         onLogin();
         onClose();  // 모달 달기
-        const baseURL = "url";
-        const redirectURI = `url/oauth/callback`; // 소셜 로그인 성공 후 이동할 경로
-        window.location.href = `${baseURL}/oauth2/authorization/${provider}?redirect_uri=${redirectURI}`; // 소셜 로그인 요청
+        const baseURL = "url"; // 백엔드 URL
+        // const redirectURI = `http://planq.choizeus.com:3000/loginSuccess`; // 소셜 로그인 성공 후 프론트엔드 경로
+        window.location.href = `${baseURL}/oauth2/authorization/${provider}`;
     }
 
     return (

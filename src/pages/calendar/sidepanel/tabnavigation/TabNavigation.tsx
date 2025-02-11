@@ -60,6 +60,6 @@ const TabButton = styled.button<{ isActive: boolean }>`
 
   &:hover {
     background: ${({ isActive, theme }) =>
-    isActive ? theme.colors.primaryDark || "#5563CC" : "#F0F0F0"};
+    isActive ? theme.colors.primaryDark || "#6673FF" : "#F0F0F0"};
   }
 `;

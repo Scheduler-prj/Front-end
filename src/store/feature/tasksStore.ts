@@ -3,7 +3,7 @@
 import {create} from "zustand/react";
 import axios from "axios"; // axios 직접 가져오기
 
-interface Task {
+export interface Task {
     todoId: number;
     title: string;
     todoAt: string; // 날짜는 문자열로 반환됨
@@ -15,23 +15,36 @@ interface Task {
 
 interface TasksState {
     tasks: Task[];
-    fetchTasks: (year: number, month: number) => Promise<void>;
+    // fetchTasks: (year: number, month: number) => Promise<void>; // 실제 데이터가 들어왔을 때 교체
+    fetchTasks: () => void;
     toggleTask: (id: number) => void;
     submitTask: (id: number) => void;
     createTask: (newTask: Omit<Task, "todoId">) => Promise<void>; // 새 투두 생성
 }
 
+// 🟢 더미 데이터
+const dummyTasks: Task[] = [
+    { todoId: 1, title: "리액트 공부하기", todoAt: "2/12", color: "#FFD8DA", planAlarm: true, planComment: "", completed: false },
+    { todoId: 2, title: "잠자기", todoAt: "2/12", color: "#FFE8C9", planAlarm: false, planComment: "", completed: true },
+    { todoId: 3, title: "스프링 공부하기", todoAt: "2/21", color: "#D9E2FF" , planAlarm: true, planComment: "", completed: false },
+];
+
 export const useTasksStore = create<TasksState>((set) => ({
     tasks: [],
 
-    // API 호출로 데이터 가져오기
-    fetchTasks: async (year, month) => {
-        try {
-            const response = await axios.get(`/api/v1/todo/${year}/${month}`);
-            set({ tasks: response.data });
-        } catch (error) {
-            console.error("Error fetching tasks:", error);
-        }
+    // // API 호출로 데이터 가져오기 -> 실제 데이터 불러올때 사용
+    // fetchTasks: async (year, month) => {
+    //     try {
+    //         const response = await axios.get(`/api/v1/todo/${year}/${month}`);
+    //         set({ tasks: response.data });
+    //     } catch (error) {
+    //         console.error("Error fetching tasks:", error);
+    //     }
+    // },
+
+    // 🟢 API 없이 더미 데이터를 불러오는 함수
+    fetchTasks: () => {
+        set({ tasks: dummyTasks });
     },
 
     // toggleTask 를 통해 상태 변경 처리

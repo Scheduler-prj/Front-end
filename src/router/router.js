@@ -2,6 +2,8 @@ import React, {Suspense} from "react";
 import {createBrowserRouter} from "react-router-dom";
 import {NamedLazy} from '../utils/NamedLazy';
 import {Layout} from "../component/Layout";
+import {LoginSuccessHandler} from "../component/login/LoginSuccessHandler";
+import { TestAPIHandler } from "../component/login/TestAPIHandler";
 
 // 동적으로 로드할 페이지
 const Calendar = NamedLazy(() => import("../pages/calendar/CalendarPage"), "CalendarPage");
@@ -62,6 +64,11 @@ export const router = createBrowserRouter([
                     </Suspense>
                 )
             },
+            // LoginSuccessHandler 추가
+            {
+                path : "test",
+                element : <TestAPIHandler />, // 동적 로드 불필요
+            }
         ]
     }
 ])

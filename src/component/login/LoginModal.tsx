@@ -11,10 +11,15 @@ interface LoginModalProps {
 }
 
 export const LoginModal = ({onClose, onLogin}: LoginModalProps) => {
-    const handleLoginClick = () => {
-        onLogin();  // 로그인 상태 업데이트
+
+    const handleSocialLogin = (provider: "google" | "kakao" | "naver") => {
+        onLogin();
         onClose();  // 모달 달기
+        const baseURL = "url"; // 백엔드 URL
+        // const redirectURI = `http://planq.choizeus.com:3000/loginSuccess`; // 소셜 로그인 성공 후 프론트엔드 경로
+        window.location.href = `${baseURL}/oauth2/authorization/${provider}`;
     }
+
     return (
         <Overlay>
             <ModalWrapper>
@@ -25,15 +30,15 @@ export const LoginModal = ({onClose, onLogin}: LoginModalProps) => {
                     <Title>Log in</Title>
                     <Subtitle>SNS 계정으로 간편 가입하기</Subtitle>
                     <ButtonContainer>
-                        <LoginButton onClick={handleLoginClick}>
+                        <LoginButton onClick={() => handleSocialLogin("kakao")}>
                             <KakaoIcon />
                             <span>카카오로 로그인</span>
                         </LoginButton>
-                        <LoginButton onClick={handleLoginClick}>
+                        <LoginButton onClick={() => handleSocialLogin("naver")}>
                             <NaverIcon />
                             <span>네이버로 로그인</span>
                         </LoginButton>
-                        <LoginButton onClick={handleLoginClick}>
+                        <LoginButton onClick={() => handleSocialLogin("google")}>
                             <GoogleIcon />
                             <span>구글로 로그인</span>
                         </LoginButton>

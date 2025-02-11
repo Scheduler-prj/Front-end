@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useState, useEffect} from "react";
 import styled from "styled-components";
-import {T6, B6, SubT1} from "../../../../../styles/Typography";
+import {T6, T7, B6, SubT1} from "../../../../../styles/Typography";
 import { ReactComponent as Create } from "../../../../../assets/icons/calendar/rightsidebar/Create.svg";
 import { ReactComponent as Edit } from "../../../../../assets/icons/calendar/rightsidebar/Edit.svg";
 import {useTasksStore} from "../../../../../store/feature/tasksStore";
+import {Task} from "../../../../../store/feature/tasksStore"
 
 interface TaskProps {
     onCreateTask: () => void;
+    onSubmit: (task: Task) => void;
 }
 
-export const TodayTasks = ({ onCreateTask }: TaskProps) => {
-    const {tasks, toggleTask, submitTask} = useTasksStore();
+export const TodayTasks = ({ onCreateTask, onSubmit }: TaskProps) => {
+    const {tasks, toggleTask, fetchTasks} = useTasksStore();
 
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
+
+    const handleSubmitClick = (task: Task) => {
+        onSubmit(task); // 부모 컴포넌트로 `onSubmit` 콜백 전달
+    };
+
+    // 컴포넌트가 마운트될 때 더미 데이터 로드
+    useEffect(() => {
+        fetchTasks();
+    }, [fetchTasks])
+
 
     return (
         <TasksWrapper>
@@ -31,7 +43,11 @@ export const TodayTasks = ({ onCreateTask }: TaskProps) => {
                     <SectionHeader completed={true}>완료</SectionHeader>
                     <TasksList>
                         {completedTasks.map((task) => (
-                            <TaskItem key={task.todoId} completed={task.completed}>
+                            <TaskItem
+                                key={task.todoId}
+                                completed={task.completed}
+                                color={task.color}
+                            >
                                 <TaskDate>{task.todoAt}</TaskDate>
                                 <TaskContent>
                                     <TaskTitle>{task.title}</TaskTitle>
@@ -53,18 +69,24 @@ export const TodayTasks = ({ onCreateTask }: TaskProps) => {
                     <SectionHeader completed={false}>미완료</SectionHeader>
                     <TasksList>
                         {incompleteTasks.map((task) => (
-                            <TaskItem key={task.todoId} completed={task.completed}>
+                            <TaskItem
+                                key={task.todoId}
+                                completed={task.completed}
+                                color={task.color}
+                            >
                                 <TaskDate>{task.todoAt}</TaskDate>
                                 <TaskContent>
                                     <TaskTitle>{task.title}</TaskTitle>
-                                    <SubmitButton onClick={() => submitTask(task.todoId)}>
-                                        성과 제출
-                                    </SubmitButton>
-                                    <Checkbox
-                                        type="checkbox"
-                                        checked={task.completed}
-                                        onChange={() => toggleTask(task.todoId)}
-                                    />
+                                    <ButtonGroup>
+                                        <SubmitButton onClick={() => handleSubmitClick(task)}>
+                                            성과 제출
+                                        </SubmitButton>
+                                        <Checkbox
+                                            type="checkbox"
+                                            checked={task.completed}
+                                            onChange={() => toggleTask(task.todoId)}
+                                        />
+                                    </ButtonGroup>
                                 </TaskContent>
                             </TaskItem>
                         ))}
@@ -90,13 +112,11 @@ const TasksWrapper = styled.div`
 `;
 
 // 완료/미완료 섹션 헤더 스타일
-const SectionHeader = styled.div<{ completed: boolean }>`
+const SectionHeader = styled(T7).attrs<{ completed: boolean }>({})`
     display: inline-block;
     padding: 8px 20px; /* 내부 여백 추가 */
-    font-size: 14px;
-    font-weight: bold;
     color: ${({ completed }) => (completed ? "#6373FF" : "#FFF")};
-    background-color: ${({ completed }) => (completed ? "#F6F7FF" : "#6373FF")}; /* 배경색 */    
+    background-color: ${({ completed }) => (completed ? "#F6F7FF" : "#6373FF")}; /* 배경색 */
     border-radius: 40px; /* 둥근 테두리 */
     text-align: center;
 `;
@@ -139,15 +159,21 @@ const TasksList = styled.ul`
     width: 100%;
 `;
 
-const TaskItem = styled.li<{ completed: boolean }>`
+const ButtonGroup = styled.div`
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 8px; /* 버튼과 체크박스 사이 간격 */
+`;
+
+const TaskItem = styled.li<{ completed: boolean; color: string }>`
     width: 100%;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 12px;
     border-radius: 8px;
-    background-color: ${({ completed, theme }) =>
-    completed ? theme.colors.coolGray10 : "#FFF6E5"};
+    background-color: ${({ completed, color, theme }) =>
+            completed ? theme.colors.coolGray10 : color}; /* 완료 여부에 따라 배경색 설정 */
     margin-bottom: 8px;
 
     &:last-child {
@@ -171,6 +197,7 @@ const TaskContent = styled.div`
     align-items: center;
     flex: 1;
     gap: 8px;
+    width: 100%;
 `;
 
 const TaskTitle = styled(SubT1)`

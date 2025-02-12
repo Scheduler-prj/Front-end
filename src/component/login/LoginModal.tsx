@@ -7,13 +7,12 @@ import {ReactComponent as CloseBtn} from "../../assets/icons/login/CloseBtn.svg"
 
 interface LoginModalProps {
     onClose: () => void;  // 모달 닫기 함수
-    onLogin: () => void;  // 로그인 상태 변경 함수
+    onLogin: (token: string) => void;   // 로그인 상태 변경 함수
 }
 
 export const LoginModal = ({onClose, onLogin}: LoginModalProps) => {
 
     const handleSocialLogin = (provider: "google" | "kakao" | "naver") => {
-        onLogin();
         onClose();  // 모달 달기
         const baseURL = "http://localhost:8080"; // 백엔드 URL
         // const redirectURI = `url`; // 소셜 로그인 성공 후 프론트엔드 경로

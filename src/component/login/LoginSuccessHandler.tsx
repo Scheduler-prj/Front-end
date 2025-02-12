@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useAuthStore } from "../../store/feature/authStore";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -6,25 +7,54 @@ export const LoginSuccessHandler = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // axios 를 사용한 GET 요청
-        axios.get("url/loginSuccess")
-            .then((response) => {
-                const data = response.data;  // axios 는 응답 데이터를 `response.data`에 저장
-                console.log("로그인 성공:", data);
+        console.log("✅ LoginSuccessHandler 실행됨");
 
-                // 현재 응답 데이터가 "ok"일 경우를 처리
-                if (response.data === "ok") {
-                    console.log("로그인 성공: 단순 확인 응답");
-                    // 추후 accessToken 이 추가되면 여기에 저장 코드 추가
-                    navigate("/calendar"); // 메인 페이지로 이동
+        // ✅ 쿠키에서 accessToken 가져오기 (자동 포함)
+        axios.get("http://localhost:8080/check-auth", { withCredentials: true })  // 나중에 배포 서버 URL 로 교체
+            .then((response) => {
+                console.log("✅ 응답 데이터:", response.data);
+
+                if (response.data.accessToken) {
+                    useAuthStore.getState().setAccessToken(response.data.accessToken);
+                    console.log("✅ Zustand 저장된 Access Token:", useAuthStore.getState().accessToken);
+                    navigate("/calendar");
                 } else {
-                    console.error("예상치 못한 응답 데이터:", response.data);
+                    console.error("❌ Access Token이 없습니다.");
+                    navigate("/");
                 }
             })
             .catch((error) => {
-                console.error("로그인 처리 실패:", error);
+                console.error("❌ 로그인 요청 중 오류 발생:", error);
+                navigate("/");
             });
-    }, [navigate]);
+    }, []);
 
-    return <div>로그인 성공! 메인 페이지로 이동 중</div>;
+    return null;
 };
+
+
+//
+// import { useEffect } from "react";
+// import { useAuthStore } from "../../store/feature/authStore";
+// import { useNavigate } from "react-router-dom";
+//
+// export const LoginSuccessHandler = () => {
+//     const navigate = useNavigate();
+//
+//     useEffect(() => {
+//         // ✅ 현재 URL에서 accessToken 가져오기
+//         const params = new URLSearchParams(window.location.search);
+//         const accessToken = params.get("accessToken");
+//
+//         if (accessToken) {
+//             console.log("✅ Access Token:", accessToken);
+//             useAuthStore.getState().setAccessToken(accessToken);
+//             navigate("/calendar"); // 로그인 성공 후 이동할 페이지
+//         } else {
+//             console.error("❌ Access Token이 없습니다.");
+//             navigate("/"); // 로그인 실패 시 메인 페이지로 이동
+//         }
+//     }, []);
+//
+//     return null;
+// };

@@ -29,6 +29,7 @@ export const router = createBrowserRouter([
                 element : (
                     <Suspense fallback={<div>Loading...</div>}>
                         <Calendar/>
+                        <LoginSuccessHandler />
                     </Suspense>
                 )
             },
@@ -63,12 +64,12 @@ export const router = createBrowserRouter([
                         <Quiz/>
                     </Suspense>
                 )
-            },
-            // LoginSuccessHandler 추가
-            {
-                path : "test",
-                element : <TestAPIHandler />, // 동적 로드 불필요
             }
+            // // LoginSuccessHandler 추가
+            // {
+            //     path : "loginSuccess" ,
+            //     element : <LoginSuccessHandler /> // 동적 로드 불필요
+            // }
         ]
     }
 ])

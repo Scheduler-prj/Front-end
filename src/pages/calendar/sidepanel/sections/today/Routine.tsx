@@ -4,17 +4,35 @@ import {T6, B3} from "../../../../../styles/Typography"
 import {ReactComponent as Create} from "../../../../../assets/icons/calendar/rightsidebar/Create.svg";
 import {ReactComponent as Edit} from "../../../../../assets/icons/calendar/rightsidebar/Edit.svg";
 import {useRoutinesStore} from "../../../../../store/feature/routinStore";
+import {useAuthStore} from "../../../../../store/feature/authStore";
 
 
 export const Routine = ({ onCreate }: { onCreate: () => void }) => {
     const { routines, toggleRoutine, fetchRoutines } = useRoutinesStore();
+    const {isLoggedIn} = useAuthStore();
 
-    console.log("현재 루틴 상태 : ", routines);
-    // 컴포넌트 마운트 시 루틴 데이터 가져오기
     useEffect(() => {
-        console.log("fetchRoutines 호출됨");
-        fetchRoutines(); // 초기 데이터 로드
-    }, []);
+        if (isLoggedIn) {
+            fetchRoutines();
+        }
+    }, [fetchRoutines, isLoggedIn]);
+
+    if (!isLoggedIn) {
+        return (
+            <RoutineWrapper>
+                <Title>루틴</Title>
+                <Divider />
+                <NoDataMessage>로그인 후 이용 가능합니다.</NoDataMessage>
+            </RoutineWrapper>
+        )
+    }
+
+    // console.log("현재 루틴 상태 : ", routines);
+    // // 컴포넌트 마운트 시 루틴 데이터 가져오기
+    // useEffect(() => {
+    //     console.log("fetchRoutines 호출됨");
+    //     fetchRoutines(); // 초기 데이터 로드
+    // }, []);
 
 
     return (
@@ -121,4 +139,12 @@ const Checkbox = styled.input`
 `;
 
 const TaskTitle = styled(B3)`
+`;
+
+const NoDataMessage = styled.p`
+    font-size: 16px;
+    color: #999;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
 `;

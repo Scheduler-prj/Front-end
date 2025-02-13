@@ -4,6 +4,7 @@ import {T6, T7, B6, SubT1} from "../../../../../styles/Typography";
 import { ReactComponent as Create } from "../../../../../assets/icons/calendar/rightsidebar/Create.svg";
 import { ReactComponent as Edit } from "../../../../../assets/icons/calendar/rightsidebar/Edit.svg";
 import {useTasksStore} from "../../../../../store/feature/tasksStore";
+import {useAuthStore} from "../../../../../store/feature/authStore";
 import {Task} from "../../../../../store/feature/tasksStore"
 
 interface TaskProps {
@@ -13,6 +14,23 @@ interface TaskProps {
 
 export const TodayTasks = ({ onCreateTask, onSubmit }: TaskProps) => {
     const {tasks, toggleTask, fetchTasks} = useTasksStore();
+    const { isLoggedIn } = useAuthStore();  // zustand 에서 로그인 상태 가져오기
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchTasks(); // 로그인한 경우에만 데이터를 불러오기
+        }
+    }, [fetchTasks, isLoggedIn]);
+
+    if (!isLoggedIn) {
+        return (
+            <TasksWrapper>
+                <Title>오늘의 할 일</Title>
+                <Divider />
+                <NoDataMessage>로그인 후 이용 가능합니다.</NoDataMessage>
+            </TasksWrapper>
+        );
+    }
 
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
@@ -20,12 +38,6 @@ export const TodayTasks = ({ onCreateTask, onSubmit }: TaskProps) => {
     const handleSubmitClick = (task: Task) => {
         onSubmit(task); // 부모 컴포넌트로 `onSubmit` 콜백 전달
     };
-
-    // 컴포넌트가 마운트될 때 더미 데이터 로드
-    useEffect(() => {
-        fetchTasks();
-    }, [fetchTasks])
-
 
     return (
         <TasksWrapper>
@@ -238,4 +250,12 @@ const SubmitButton = styled.button`
         border-color: #D4D6EB; /* 비활성화 시 테두리 색상 */
         cursor: not-allowed; /* 비활성화 상태 커서 */
     }
+`;
+
+const NoDataMessage = styled.p`
+    font-size: 16px;
+    color: #999;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
 `;

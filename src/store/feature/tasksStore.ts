@@ -22,7 +22,7 @@ interface TasksState {
     createTask: (newTask: Omit<Task, "todoId">) => Promise<void>; // 새 투두 생성
 }
 
-// 🟢 더미 데이터
+// 더미 데이터
 const dummyTasks: Task[] = [
     { todoId: 1, title: "리액트 공부하기", todoAt: "2/12", color: "#FFD8DA", planAlarm: true, planComment: "", completed: false },
     { todoId: 2, title: "잠자기", todoAt: "2/12", color: "#FFE8C9", planAlarm: false, planComment: "", completed: true },

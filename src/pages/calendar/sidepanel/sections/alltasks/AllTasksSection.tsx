@@ -1,20 +1,45 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import styled from "styled-components";
 import {useTasksStore} from "../../../../../store/feature/tasksStore";
 import { ReactComponent as Edit } from "../../../../../assets/icons/calendar/rightsidebar/Edit.svg"
 import {SubT1, T6, T7} from "../../../../../styles/Typography";
 import {TaskCreation} from "../today/TaskCreation";
+import {useAuthStore} from "../../../../../store/feature/authStore";
 
 export const AllTasksSection = () => {
     const {tasks, fetchTasks, toggleTask, submitTask} = useTasksStore();
+    const { isLoggedIn } = useAuthStore();
+
+    // 항상 실행되도록 유지 (조건문으로 useState 감싸지 않음)
+    const [activeTab, setActiveTab] = useState<"incomplete" | "completed">("incomplete");
+    const [isCreating, setIsCreating] = useState(false);
+
+    // useCallback 을 사용하여 함수 메모이제이션
+    const fetchTasksIfLoggedIn = useCallback(() => {
+        if (isLoggedIn) {
+            fetchTasks();
+        }
+    }, [isLoggedIn, fetchTasks]);
+
+    // isLoggedIn이 true 로 변경될 때만 fetchTasks 실행
+    useEffect(() => {
+        fetchTasksIfLoggedIn();
+    }, [fetchTasksIfLoggedIn]);
+
+    // 로그인하지 않은 경우 아예 컴포넌트 렌더링하지 않음
+    if (!isLoggedIn) {
+        return (
+            <AllTasksWrapper>
+                <Title>오늘의 할 일</Title>
+                <Divider />
+                <NoDataMessage>로그인 후 이용 가능합니다.</NoDataMessage>
+            </AllTasksWrapper>
+        );
+    }
 
     // 완료된/미완료된 할 일 분리
     const completedTasks = tasks.filter((task) => task.completed);
     const incompleteTasks = tasks.filter((task) => !task.completed);
-
-    // 상태 관리 (현재 활성화된 탭 상태)
-    const [activeTab, setActiveTab] = useState<"incomplete" | "completed">("incomplete");
-    const [isCreating, setIsCreating] = useState(false);
 
     const handleCreateClick = () => {
         setIsCreating(true); // "할 일 생성하기" 버튼 클릭 시 상태 변경
@@ -197,4 +222,10 @@ const CreateButton = styled(T6).attrs({ as: "button" })`
     cursor: pointer;
 `;
 
-
+const NoDataMessage = styled.p`
+    font-size: 16px;
+    color: #999;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+`;

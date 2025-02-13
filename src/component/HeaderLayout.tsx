@@ -1,23 +1,38 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {ReactComponent as NotificationIcon} from "../assets/icons/header/NotificationIcon.svg";
 import ProfileImage from "../apis/kong.jpg";
 import { LoginModal } from "./login/LoginModal";
+import {useAuthStore} from "../store/feature/authStore";
 
 
 type HeaderLayoutProps = {
     currentPage : string;  // currentPage 는 문자열 타입
     isLoggedIn : boolean;
-    onLogin : () => void;
+    onLogin : (token: string) => void; // (토큰을 받을 수 있도록)
 };
 
-export const HeaderLayout = ({ currentPage, isLoggedIn, onLogin, }: HeaderLayoutProps) => {
+export const HeaderLayout = ({ currentPage, onLogin }: HeaderLayoutProps) => {
     /**
      * renderHeaderContent
      * - 현재 페이지(`currentPage`) 값에 따라 헤더 좌측 영역에 렌더링할 콘텐츠를 결정합니다.
      * - 특정 페이지에서 추가적인 콘텐츠가 필요 없을 경우 `null`을 반환하여 렌더링하지 않습니다.
      */
     const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+
+    // Zustand 에서 로그인 상태 가져오기
+    const { accessToken, userInfo, setAccessToken, fetchUserInfo } = useAuthStore();
+
+    // accessToken 이 존재하면 로그인 상태로 설정
+    const isLoggedIn = !!accessToken;
+
+    // ✅ 로그인 후 사용자 정보 가져오기 (컴포넌트 마운트 시 실행)
+    useEffect(() => {
+        if (isLoggedIn && !userInfo) {
+            fetchUserInfo();
+        }
+    }, [isLoggedIn, userInfo, fetchUserInfo]);
+
 
     const handleLoginButtonClick = () => {
         setLoginModalOpen(true);
@@ -27,9 +42,10 @@ export const HeaderLayout = ({ currentPage, isLoggedIn, onLogin, }: HeaderLayout
         setLoginModalOpen(false);
     };
 
-    const handleLoginSuccess = () => {
-        onLogin(); // 로그인 상태 업데이트
-        setLoginModalOpen(false); // 모달 닫기
+    const handleLoginSuccess = (token:string) => {
+        setAccessToken(token); // 로그인 성공 시 Zustand에 저장
+        onLogin(token); // 부모 컴포넌트(Layout) 상태 업데이트
+        setLoginModalOpen(false);
     };
 
     const renderHeaderContent = () => {
@@ -54,9 +70,13 @@ export const HeaderLayout = ({ currentPage, isLoggedIn, onLogin, }: HeaderLayout
                 <Icon>
                     <NotificationIcon />
                 </Icon>
-                {isLoggedIn ? (
+                {isLoggedIn && userInfo ? (
                     <Profile>
-                        <img src={ProfileImage} alt="Profile" />
+                        <img
+                            src={userInfo.profile}
+                            alt="Profile"
+                            referrerPolicy="no-referrer"
+                        />
                     </Profile>
                 ) : (
                     <LoginButton onClick={handleLoginButtonClick}>Log in</LoginButton>

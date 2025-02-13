@@ -57,6 +57,7 @@ export const NavigationBar = ({isLoggedIn} : {isLoggedIn:boolean}) => {
                                     height: "100%",
                                     objectFit: "cover",
                                 }}
+                                referrerPolicy="no-referrer"
                             />
                         </div>
                         <div

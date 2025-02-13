@@ -72,7 +72,11 @@ export const HeaderLayout = ({ currentPage, onLogin }: HeaderLayoutProps) => {
                 </Icon>
                 {isLoggedIn && userInfo ? (
                     <Profile>
-                        <img src={userInfo.profile} alt="Profile" />
+                        <img
+                            src={userInfo.profile}
+                            alt="Profile"
+                            referrerPolicy="no-referrer"
+                        />
                     </Profile>
                 ) : (
                     <LoginButton onClick={handleLoginButtonClick}>Log in</LoginButton>

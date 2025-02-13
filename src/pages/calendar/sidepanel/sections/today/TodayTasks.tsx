@@ -39,12 +39,6 @@ export const TodayTasks = ({ onCreateTask, onSubmit }: TaskProps) => {
         onSubmit(task); // 부모 컴포넌트로 `onSubmit` 콜백 전달
     };
 
-    // 컴포넌트가 마운트될 때 더미 데이터 로드
-    // useEffect(() => {
-    //     fetchTasks();
-    // }, [fetchTasks])
-
-
     return (
         <TasksWrapper>
             <Header>

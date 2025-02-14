@@ -15,10 +15,13 @@ import { ReactComponent as ResultsIcon } from "../assets/icons/navigation-bar/Re
 import { ReactComponent as LogoIcon } from "../assets/logo/LogoIcon.svg";
 import { theme } from "../styles/theme";
 import { T7, T6, B6 } from "../styles/Typography";
+import {useAuthStore} from "../store/feature/authStore";
 
 export const NavigationBar = ({isLoggedIn} : {isLoggedIn:boolean}) => {
     const navigate = useNavigate();
     const location = useLocation(); // 현재 경로를 가져오기 위한 훅
+
+    const { userInfo } = useAuthStore(); // Zustand에서 로그인 상태와 사용자 정보 가져오기
 
     const menus = [
         { name: "캘린더", path: "/calendar", icon: CalendarIcon },
@@ -34,7 +37,7 @@ export const NavigationBar = ({isLoggedIn} : {isLoggedIn:boolean}) => {
                 <LogoIcon style={{ width: "199px", height: "53px" }} /> {/* 로고 스타일 */}
             </Logo>
             <UserCard>
-                {isLoggedIn ? (
+                {isLoggedIn && userInfo ? (
                     <>
                         {/* 로그인 상태 */}
                         <div
@@ -47,13 +50,14 @@ export const NavigationBar = ({isLoggedIn} : {isLoggedIn:boolean}) => {
                             }}
                         >
                             <img
-                                src={require("../apis/kong.jpg")}
+                                src={userInfo.profile}
                                 alt="User"
                                 style={{
                                     width: "100%",
                                     height: "100%",
                                     objectFit: "cover",
                                 }}
+                                referrerPolicy="no-referrer"
                             />
                         </div>
                         <div
@@ -64,7 +68,7 @@ export const NavigationBar = ({isLoggedIn} : {isLoggedIn:boolean}) => {
                                 gap: "4px",
                             }}
                         >
-                            <T6>김가원</T6>
+                            <T6>{userInfo.nickname}</T6>
                             <B6 style={{ color: "#F5F5FA" }}>20일 연속 학습 중!</B6>
                         </div>
                     </>

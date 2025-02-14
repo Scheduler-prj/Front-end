@@ -1,3 +1,5 @@
+// 캘린더 우측 사이드바에 루틴과 관련된 상태를 관리하기 위한 store 입니다.
+
 import { create } from "zustand";
 // import axios from "axios";
 
@@ -27,25 +29,25 @@ interface RoutineStore {
     addRoutine: (newRoutine: RoutinePayload) => Promise<void>; // 루틴 추가 함수
 }
 
-// // 더미 데이터 정의
-// const dummyRoutines: Routine[] = [
-//     {
-//         routine_id: 1,
-//         title: "테스트",
-//         dtow_id: 1,
-//         alarm: false,
-//         comment: "매일 아침 한 잔",
-//         isClear: true,
-//     },
-//     {
-//         routine_id: 2,
-//         title: "영양제 챙겨먹기",
-//         dtow_id: 1,
-//         alarm: true,
-//         comment: "저녁 식사 후",
-//         isClear: false,
-//     },
-// ];
+// 더미 데이터 정의
+const dummyRoutines: Routine[] = [
+    {
+        routine_id: 1,
+        title: "더미데이터1",
+        dtow_id: 1,
+        alarm: false,
+        comment: "매일 아침 한 잔",
+        isClear: true,
+    },
+    {
+        routine_id: 2,
+        title: "더미데이터2",
+        dtow_id: 1,
+        alarm: true,
+        comment: "저녁 식사 후",
+        isClear: false,
+    },
+];
 
 // Zustand Store 생성
 export const useRoutinesStore = create<RoutineStore>((set) => ({
@@ -55,6 +57,25 @@ export const useRoutinesStore = create<RoutineStore>((set) => ({
     *  response 부분에서 axios 통신을 통해서 유저 데이터 가져오기
     * */
     fetchRoutines: async () => {
+        // try {
+        //     const currentState = useRoutinesStore.getState().routines;
+        //     if (currentState.length > 0) {
+        //         console.log("이미 루틴 데이터가 있음. fetchRoutines 호출 중단.");
+        //         return;
+        //     }
+        //
+        //     // 나중에 실제 API 요청으로 교체
+        //     // 더미 데이터 로드
+        //     const response = await new Promise<{ data: Routine[] }>((resolve) =>
+        //         setTimeout(() => resolve({ data: [] }), 500)
+        //     );
+        //     console.log("가져온 데이터: ", response.data);
+        //
+        //     set({ routines: response.data });
+        // } catch (error) {
+        //     console.error("루틴 데이터를 가져오는 데 실패했습니다.", error);
+        // }
+
         try {
             const currentState = useRoutinesStore.getState().routines;
             if (currentState.length > 0) {
@@ -62,13 +83,11 @@ export const useRoutinesStore = create<RoutineStore>((set) => ({
                 return;
             }
 
-            // 나중에 실제 API 요청으로 교체
-            const response = await new Promise<{ data: Routine[] }>((resolve) =>
-                setTimeout(() => resolve({ data: [] }), 500)
-            );
-            console.log("가져온 데이터: ", response.data);
+            console.log("더미 데이터 로드 중...");
+            await new Promise((resolve) => setTimeout(resolve, 500)); // 더미 API 응답 시간 시뮬레이션
+            set({ routines: dummyRoutines }); // ✅ 더미 데이터 설정
 
-            set({ routines: response.data });
+            console.log("가져온 데이터: ", dummyRoutines);
         } catch (error) {
             console.error("루틴 데이터를 가져오는 데 실패했습니다.", error);
         }

@@ -12,6 +12,7 @@ export const Routine = ({ onCreate }: { onCreate: () => void }) => {
     const {isLoggedIn} = useAuthStore();
 
     useEffect(() => {
+        console.log("isLoggedIn", isLoggedIn);
         if (isLoggedIn) {
             fetchRoutines();
         }

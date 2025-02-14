@@ -17,6 +17,7 @@ export const TodayTasks = ({ onCreateTask, onSubmit }: TaskProps) => {
     const { isLoggedIn } = useAuthStore();  // zustand 에서 로그인 상태 가져오기
 
     useEffect(() => {
+        console.log("isLoggedIn", isLoggedIn);
         if (isLoggedIn) {
             fetchTasks(); // 로그인한 경우에만 데이터를 불러오기
         }

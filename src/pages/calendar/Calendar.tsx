@@ -50,9 +50,9 @@ export const Calendar = ({year, month}: CalendarProps) => {
             {days.map((day, index) => (
                 <DayBox
                     key={index}
-                    isCurrentMonth={day.isCurrentMonth}
+                    $isCurrentMonth={day.isCurrentMonth}
                 >
-                    <DayNumber isToday={day.isToday}>{day.day}</DayNumber>
+                    <DayNumber $isToday={day.isToday}>{day.day}</DayNumber>
                     <Tasks>
                         {day.tasks.map((task, idx) => (
                             <Task key={idx}>{task}</Task>
@@ -73,7 +73,7 @@ const CalendarGrid = styled.div`
     border-radius: 16px;
 `;
 
-const DayBox = styled.div<DayBoxProps>`
+const DayBox = styled.div<{ $isCurrentMonth: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -84,7 +84,7 @@ const DayBox = styled.div<DayBoxProps>`
     max-width: 140px;
     gap: 12px;
     border-radius: 16px;
-    opacity: ${({isCurrentMonth}) => (isCurrentMonth ? 1 : 0.4)};
+    opacity: ${({$isCurrentMonth}) => ($isCurrentMonth ? 1 : 0.4)};
     cursor: pointer;
 
     //&:hover {
@@ -92,17 +92,17 @@ const DayBox = styled.div<DayBoxProps>`
     //}
 `;
 
-const DayNumber = styled.div<{ isToday: boolean }>`
+const DayNumber = styled.div<{ $isToday: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
     width: 40px;
     height: 40px;
     border-radius: 100px;
-    background: ${({ isToday, theme }) =>
-            isToday ? theme.colors.primary : "transparent"};
-    color: ${({ isToday, theme }) =>
-            isToday ? theme.colors.white : theme.colors.black};
+    background: ${({ $isToday, theme }) =>
+            $isToday ? theme.colors.primary : "transparent"};
+    color: ${({ $isToday, theme }) =>
+            $isToday ? theme.colors.white : theme.colors.black};
     font-size: 16px;
     font-weight: bold;
 `;
